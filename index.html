@@ -3,284 +3,266 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-<meta name="theme-color" content="#0b0b0c">
+<meta name="theme-color" content="#0f0f11">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Тренировки">
 <meta name="mobile-web-app-capable" content="yes">
-<meta name="format-detection" content="telephone=no">
-<meta name="msapplication-TileColor" content="#0b0b0c">
 <title>Трекер тренировки</title>
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='96' fill='%230b0b0c'/%3E%3Ccircle cx='256' cy='256' r='80' fill='none' stroke='%23f5c842' stroke-width='40'/%3E%3Crect x='116' y='236' width='280' height='40' fill='%23f5c842'/%3E%3Ccircle cx='116' cy='256' r='50' fill='%23f5c842'/%3E%3Ccircle cx='396' cy='256' r='50' fill='%23f5c842'/%3E%3C/svg%3E">
-<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='96' fill='%230b0b0c'/%3E%3Ccircle cx='256' cy='256' r='80' fill='none' stroke='%23f5c842' stroke-width='40'/%3E%3Crect x='116' y='236' width='280' height='40' fill='%23f5c842'/%3E%3Ccircle cx='116' cy='256' r='50' fill='%23f5c842'/%3E%3Ccircle cx='396' cy='256' r='50' fill='%23f5c842'/%3E%3C/svg%3E">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='96' fill='%230f0f11'/%3E%3Ccircle cx='256' cy='256' r='80' fill='none' stroke='%23fbbf24' stroke-width='40'/%3E%3Crect x='116' y='236' width='280' height='40' fill='%23fbbf24'/%3E%3Ccircle cx='116' cy='256' r='50' fill='%23fbbf24'/%3E%3Ccircle cx='396' cy='256' r='50' fill='%23fbbf24'/%3E%3C/svg%3E">
 <style>
-  :root {
-    --bg:#0b0b0c; --card:#151517; --card2:#1b1b1e; --border:#232327;
-    --accent:#f5c842; --blue:#5aa7e7; --red:#e74c3c;
-    --text:#f2f2f2; --text2:#9a9a9a; --muted:#5c5c5c;
-    --safe-top:env(safe-area-inset-top, 0px);
-    --safe-bottom:env(safe-area-inset-bottom, 0px);
+  :root { 
+    --bg: #0f0f11; 
+    --card: #18181b; 
+    --card2: #222226; 
+    --border: #2a2a2e; 
+    --accent: #fbbf24; 
+    --blue: #60a5fa; 
+    --red: #f87171; 
+    --green: #4ade80; 
+    --text: #e4e4e7; 
+    --text2: #a1a1aa; 
+    --muted: #71717a; 
+    --safe-top: env(safe-area-inset-top, 0px); 
+    --safe-bottom: env(safe-area-inset-bottom, 0px); 
   }
-  html, body { overscroll-behavior-y: contain; -webkit-user-select:none; user-select:none; -webkit-touch-callout:none; }
-  * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; touch-action:manipulation; }
-  input, textarea { -webkit-user-select:text; user-select:text; }
-  body { font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif; background:var(--bg); color:var(--text); min-height:100vh; min-height:100dvh; overflow-x:hidden; font-size:15px; }
-  body.swiped { overscroll-behavior-y:auto; }
-  .screen { display:none; min-height:100vh; min-height:100dvh; padding:calc(20px + var(--safe-top)) 18px calc(40px + var(--safe-bottom)); max-width:520px; margin:0 auto; }
-  .screen.active { display:block; }
+  html, body { overscroll-behavior-y: contain; -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; }
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
+  input, textarea, select { -webkit-user-select: text; user-select: text; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; min-height: 100dvh; overflow-x: hidden; font-size: 15px; line-height: 1.5; }
+  .screen { display: none; min-height: 100vh; min-height: 100dvh; padding: calc(24px + var(--safe-top)) 20px calc(40px + var(--safe-bottom)); max-width: 520px; margin: 0 auto; }
+  .screen.active { display: block; }
 
-  .dashboard-header { text-align:center; padding:24px 0 12px; }
-  .dashboard-header h1 { color:var(--text); font-size:22px; font-weight:700; letter-spacing:-0.3px; }
-  .dashboard-header .subtitle { color:var(--muted); font-size:12px; margin-top:4px; }
+  .top-bar { display: flex; justify-content: space-between; align-items: center; padding: 4px 0 16px; }
+  .app-title { font-size: 24px; font-weight: 700; letter-spacing: -0.5px; display: flex; align-items: center; gap: 10px; }
+  .app-title .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--green); box-shadow: 0 0 8px var(--green); }
+  .gear-btn { background: transparent; border: 1px solid var(--border); color: var(--text2); font-size: 18px; cursor: pointer; padding: 8px 12px; border-radius: 12px; transition: all 0.2s; }
+  .gear-btn:active { background: var(--card2); color: var(--text); }
 
-  .big-stat { text-align:center; padding:24px 18px; margin:14px 0; background:linear-gradient(180deg,#17171a,#141416); border:1px solid var(--border); border-radius:18px; cursor:pointer; transition:transform .15s; }
-  .big-stat:active { transform:scale(0.98); }
-  .big-stat .big-label { font-size:11px; color:var(--text2); text-transform:uppercase; letter-spacing:1.2px; }
-  .big-stat .big-value { font-size:44px; font-weight:800; color:var(--accent); margin:8px 0 4px; letter-spacing:-1.5px; font-variant-numeric:tabular-nums; }
-  .big-stat .big-sub { font-size:12px; color:var(--muted); }
-  .big-stat.time-card { padding:18px; margin:10px 0; }
-  .big-stat.time-card .big-value { font-size:28px; color:var(--blue); letter-spacing:-0.5px; margin:6px 0 2px; }
+  .streak-card { background: linear-gradient(135deg, var(--card) 0%, var(--card2) 100%); border-radius: 20px; padding: 18px 20px; margin-bottom: 16px; display: flex; align-items: center; gap: 16px; }
+  .streak-card .streak-num { font-size: 32px; font-weight: 700; color: var(--red); }
+  .streak-card .streak-label { font-size: 12px; color: var(--text2); font-weight: 500; }
 
-  .stats-row { display:grid; grid-template-columns:1fr 1fr 1fr; gap:8px; margin:14px 0; }
-  .mini-stat { background:var(--card); border:1px solid var(--border); border-radius:14px; padding:14px 6px; text-align:center; cursor:pointer; transition:transform .15s; }
-  .mini-stat:active { transform:scale(0.96); }
-  .mini-stat .ms-label { font-size:10px; color:var(--text2); text-transform:uppercase; }
-  .mini-stat .ms-value { font-size:20px; font-weight:700; color:var(--accent); margin-top:5px; font-variant-numeric:tabular-nums; }
+  .goal-card { background: var(--card); border-radius: 20px; padding: 18px 20px; margin-bottom: 16px; }
+  .goal-card .gc-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+  .goal-card .gc-label { font-size: 12px; color: var(--text2); font-weight: 500; }
+  .goal-card .gc-value { font-size: 15px; font-weight: 600; color: var(--green); }
+  .goal-card .gc-bar { height: 6px; background: var(--bg); border-radius: 3px; overflow: hidden; }
+  .goal-card .gc-fill { height: 100%; background: var(--green); border-radius: 3px; transition: width 0.4s ease; }
 
-  .section-title { font-size:12px; color:var(--muted); text-transform:uppercase; letter-spacing:1px; margin:22px 0 10px; padding-left:2px; }
-  .section-sub { font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:1px; margin:14px 0 8px; }
+  .chips { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 12px; margin-bottom: 16px; scrollbar-width: none; }
+  .chips::-webkit-scrollbar { display: none; }
+  .chip { flex: 0 0 auto; padding: 8px 16px; border-radius: 20px; background: var(--card); color: var(--text2); font-size: 13px; font-weight: 500; cursor: pointer; transition: all 0.2s; }
+  .chip.active { background: var(--accent); color: #000; font-weight: 600; }
 
-  .day-list { margin-bottom:14px; }
-  .day-item { display:flex; justify-content:space-between; align-items:center; background:var(--card); border:1px solid var(--border); padding:14px 16px; border-radius:14px; margin-bottom:8px; }
-  .day-item .day-date { font-size:14px; color:var(--text); }
-  .day-item .day-date small { display:block; color:var(--muted); font-size:11px; margin-top:3px; }
-  .day-item .day-reps { font-size:20px; font-weight:700; color:var(--accent); font-variant-numeric:tabular-nums; }
-  .day-item .day-reps small { display:block; color:var(--muted); font-size:10px; text-align:right; font-weight:400; }
-  .day-item.today { border-color:#3a3524; }
+  .ex-card { background: var(--card); border-radius: 20px; padding: 18px; margin-bottom: 14px; }
+  .ex-card .ex-head { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+  .ex-card .ex-title { font-size: 16px; font-weight: 600; flex: 1; }
+  .ex-card .cat-badge { font-size: 11px; background: rgba(139, 124, 246, 0.15); color: #a78bfa; padding: 4px 10px; border-radius: 8px; font-weight: 600; }
+  .ex-card .card-btn { background: transparent; border: 1px solid var(--border); color: var(--text2); width: 36px; height: 36px; border-radius: 10px; cursor: pointer; font-size: 15px; transition: all 0.2s; display: flex; align-items: center; justify-content: center; }
+  .ex-card .card-btn:active { background: var(--accent); color: #000; border-color: var(--accent); }
 
-  .btn { display:block; width:100%; padding:16px; border:none; border-radius:14px; font-size:15px; font-weight:600; cursor:pointer; margin-top:10px; transition:transform .15s; }
-  .btn:active { transform:scale(0.98); }
-  .btn-primary { background:var(--accent); color:#000; }
-  .btn-secondary { background:var(--card2); border:1px solid var(--border); color:var(--text2); }
-  .btn-danger-soft { background:#1d1416; border:1px solid #3a2325; color:var(--red); }
-  .btn-install { background:linear-gradient(135deg,#f5c842,#e0b32d); color:#000; margin-bottom:10px; position:relative; overflow:hidden; }
-  .btn-install::before { content:''; position:absolute; top:0; left:-100%; width:100%; height:100%; background:linear-gradient(90deg,transparent,rgba(255,255,255,.25),transparent); animation:shine 2.5s infinite; }
-  @keyframes shine { 0% { left:-100%; } 50%,100% { left:100%; } }
+  .ex-card .goal-block { background: var(--bg); border-radius: 14px; padding: 12px 14px; margin-bottom: 14px; }
+  .ex-card .goal-label { font-size: 11px; color: var(--muted); font-weight: 500; margin-bottom: 4px; }
+  .ex-card .goal-value { font-size: 18px; font-weight: 700; color: var(--accent); }
+  .ex-card .goal-value span { color: var(--text2); font-weight: 500; font-size: 14px; }
+  .ex-card .goal-bar { height: 4px; background: var(--card2); border-radius: 2px; margin-top: 8px; overflow: hidden; }
+  .ex-card .goal-fill { height: 100%; background: linear-gradient(90deg, var(--accent), #f59e0b); border-radius: 2px; transition: width 0.4s ease; }
 
-  .install-banner { display:none; background:linear-gradient(135deg,#1c1a12,#18160f); border:1px solid #3a3524; border-radius:16px; padding:16px; margin:14px 0; align-items:center; gap:14px; }
-  .install-banner.visible { display:flex; }
-  .install-banner .ib-icon { font-size:32px; flex-shrink:0; }
-  .install-banner .ib-text { flex:1; }
-  .install-banner .ib-title { font-size:14px; font-weight:600; color:var(--text); }
-  .install-banner .ib-sub { font-size:12px; color:var(--text2); margin-top:2px; }
-  .install-banner .ib-close { background:var(--card2); border:1px solid var(--border); color:var(--text2); width:30px; height:30px; border-radius:8px; cursor:pointer; font-size:14px; flex-shrink:0; }
+  .ex-card .ex-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; text-align: center; margin-bottom: 12px; }
+  .ex-card .ex-stats .st-v { font-size: 16px; font-weight: 600; color: var(--text); }
+  .ex-card .ex-stats .st-l { font-size: 10px; color: var(--muted); font-weight: 500; margin-top: 2px; }
+  
+  .ex-card .ex-stats-row2 { display: flex; justify-content: space-between; font-size: 12px; color: var(--text2); padding-top: 12px; border-top: 1px solid var(--border); }
+  .ex-card .ex-stats-row2 b { color: var(--text); font-weight: 600; }
+  
+  .ex-card .stats-expand { display: none; margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--border); }
+  .ex-card .stats-expand.open { display: block; }
+  .ex-card .period-chips { display: flex; gap: 6px; overflow-x: auto; margin-bottom: 12px; scrollbar-width: none; }
+  .ex-card .period-chips::-webkit-scrollbar { display: none; }
+  .ex-card .p-chip { flex: 0 0 auto; padding: 6px 12px; border-radius: 10px; background: var(--card2); color: var(--text2); font-size: 12px; font-weight: 500; cursor: pointer; transition: all 0.2s; }
+  .ex-card .p-chip.active { background: var(--green); color: #000; }
+  .ex-card .chart-canvas { width: 100%; height: 120px; }
+  .ex-card .chart-totals { text-align: center; font-size: 12px; color: var(--text2); margin: 12px 0; }
+  .ex-card .chart-totals b { color: var(--text); font-weight: 600; }
+  .ex-card .mini-heat-label { font-size: 11px; color: var(--muted); font-weight: 500; margin: 12px 0 6px; }
+  .ex-card .mini-heat { display: grid; grid-template-columns: repeat(26, 1fr); gap: 3px; }
+  .ex-card .mini-heat div { aspect-ratio: 1; border-radius: 3px; background: var(--card2); transition: background 0.2s; }
 
-  .app-badge { display:inline-flex; align-items:center; gap:6px; font-size:10px; color:var(--accent); background:#1c1a12; border:1px solid #3a3524; padding:4px 10px; border-radius:10px; margin-top:8px; font-weight:500; }
+  .bottom-actions { margin-top: 24px; display: flex; flex-direction: column; gap: 10px; }
+  .btn { display: block; width: 100%; padding: 16px; border: none; border-radius: 16px; font-size: 15px; font-weight: 600; cursor: pointer; transition: transform 0.15s, opacity 0.2s; }
+  .btn:active { transform: scale(0.98); opacity: 0.9; }
+  .btn-primary { background: var(--accent); color: #000; }
+  .btn-secondary { background: var(--card2); color: var(--text); }
+  .btn-danger-soft { background: rgba(248, 113, 113, 0.1); color: var(--red); }
 
-  .calendar-nav { display:flex; justify-content:space-between; align-items:center; margin:4px 0 14px; }
-  .calendar-nav button { background:var(--card2); border:1px solid var(--border); color:var(--accent); width:36px; height:36px; border-radius:10px; font-size:18px; cursor:pointer; display:flex; align-items:center; justify-content:center; }
-  .calendar-nav .month-label { color:var(--text); font-size:15px; font-weight:600; }
-  .calendar-grid { display:grid; grid-template-columns:repeat(7,1fr); gap:4px; }
-  .calendar-grid .day-header { text-align:center; color:var(--muted); font-size:10px; padding:4px 0; font-weight:500; }
-  .calendar-grid .day-cell { height:42px; background:var(--card); border:1px solid var(--border); border-radius:10px; display:flex; flex-direction:column; align-items:center; justify-content:center; cursor:pointer; transition:all .15s; }
-  .calendar-grid .day-cell:active { background:var(--card2); }
-  .calendar-grid .day-cell.has-data { background:#1c1a12; border-color:#3a3524; }
-  .calendar-grid .day-cell.today { outline:1.5px solid var(--accent); outline-offset:-1.5px; }
-  .calendar-grid .day-cell.selected { background:#262214; outline:1.5px solid var(--accent); outline-offset:-1.5px; }
-  .calendar-grid .day-cell .day-num { font-size:13px; color:var(--text2); font-weight:500; line-height:1; }
-  .calendar-grid .day-cell .day-reps { font-size:9px; color:var(--accent); margin-top:2px; font-weight:600; line-height:1; }
-  .calendar-grid .day-cell.empty { background:transparent; border:none; cursor:default; }
+  .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); backdrop-filter: blur(4px); z-index: 100; justify-content: flex-end; align-items: flex-end; }
+  .modal-overlay.active { display: flex; }
+  .modal { background: var(--card); border-radius: 24px 24px 0 0; padding: 20px 20px calc(30px + var(--safe-bottom)); width: 100%; max-width: 520px; margin: 0 auto; max-height: 88vh; overflow-y: auto; animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
+  .modal::before { content: ''; display: block; width: 40px; height: 4px; border-radius: 2px; background: var(--border); margin: 0 auto 20px; }
+  @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+  .modal h2 { color: var(--text); margin-bottom: 20px; font-size: 20px; font-weight: 700; }
+  .close-modal { float: right; background: var(--card2); border: none; color: var(--text2); width: 36px; height: 36px; border-radius: 10px; font-size: 18px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
 
-  .header { text-align:center; padding:12px 0 6px; }
-  .header h1 { color:var(--text); font-size:20px; font-weight:700; }
-  .program-tabs { display:flex; gap:8px; margin:14px 0; overflow-x:auto; padding-bottom:6px; -webkit-overflow-scrolling:touch; scrollbar-width:none; }
-  .program-tabs::-webkit-scrollbar { display:none; }
-  .program-tabs button { flex:0 0 auto; min-width:104px; padding:12px; border:1px solid var(--border); border-radius:12px; background:var(--card); color:var(--text2); font-size:13px; cursor:pointer; transition:all .2s; font-weight:500; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:150px; }
-  .program-tabs button.active { border-color:var(--accent); color:var(--accent); }
-  .program-tabs button.add-tab { min-width:46px; max-width:46px; font-size:20px; color:var(--accent); padding:8px; }
+  .picker-row { display: flex; justify-content: space-between; align-items: center; background: var(--card2); padding: 16px; border-radius: 16px; margin-bottom: 10px; cursor: pointer; transition: background 0.2s; }
+  .picker-row:active { background: var(--border); }
+  .picker-row .name { font-size: 15px; font-weight: 600; color: var(--text); }
+  .picker-row .sub { font-size: 12px; color: var(--muted); margin-top: 2px; }
+  .picker-row .reps { color: var(--accent); font-weight: 700; font-size: 18px; }
 
-  .stats-grid { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin:14px 0; }
-  .stat-card { background:var(--card); border:1px solid var(--border); border-radius:14px; padding:14px; cursor:pointer; transition:transform .15s; }
-  .stat-card:active { transform:scale(0.98); }
-  .stat-card.clickable { background:#1c1a12; }
-  .stat-card .label { font-size:10px; color:var(--text2); text-transform:uppercase; }
-  .stat-card .value { font-size:24px; font-weight:700; color:var(--accent); margin-top:4px; font-variant-numeric:tabular-nums; }
-  .stat-card .sub { font-size:10px; color:var(--muted); margin-top:3px; }
+  .settings-group { background: var(--card2); border-radius: 16px; padding: 16px; margin-bottom: 14px; }
+  .settings-group h3 { font-size: 12px; color: var(--muted); font-weight: 600; margin-bottom: 12px; }
+  .settings-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--border); gap: 12px; }
+  .settings-row:last-child { border-bottom: none; }
+  .settings-row .sr-label { font-size: 14px; color: var(--text); flex: 1; font-weight: 500; }
+  .select-input, .num-input, .text-input { background: var(--bg); border: 1px solid var(--border); color: var(--text); padding: 10px 12px; border-radius: 12px; font-size: 14px; transition: border-color 0.2s; }
+  .select-input { max-width: 160px; }
+  .num-input { color: var(--accent); text-align: center; width: 80px; font-weight: 600; }
+  .text-input { width: 100%; margin-bottom: 12px; }
+  .select-input:focus, .num-input:focus, .text-input:focus { border-color: var(--accent); outline: none; }
+  
+  .toggle { width: 48px; height: 28px; background: var(--bg); border: 1px solid var(--border); border-radius: 14px; cursor: pointer; position: relative; transition: background 0.2s; flex-shrink: 0; }
+  .toggle.active { background: var(--accent); border-color: var(--accent); }
+  .toggle::after { content: ''; position: absolute; top: 3px; left: 3px; width: 20px; height: 20px; background: var(--text); border-radius: 50%; transition: left 0.2s; }
+  .toggle.active::after { left: 23px; background: #000; }
+  .range-input { width: 100px; accent-color: var(--accent); }
 
-  .exercise-list { margin:14px 0; }
-  .exercise-row { display:flex; justify-content:space-between; align-items:center; background:var(--card); border:1px solid var(--border); padding:13px 16px; border-radius:12px; margin-bottom:6px; }
-  .exercise-row .name { font-size:14px; color:var(--text2); }
-  .exercise-row .reps { color:var(--accent); font-weight:700; font-size:16px; font-variant-numeric:tabular-nums; }
-  .exercise-row .reps.blue { color:var(--blue); }
+  .set-block { background: var(--card2); border-radius: 16px; padding: 16px; margin-bottom: 12px; }
+  .set-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+  .set-header .set-name { color: var(--accent); font-weight: 600; font-size: 14px; }
+  .item-row { display: flex; gap: 8px; align-items: center; background: var(--bg); padding: 10px; border-radius: 12px; margin-bottom: 8px; }
+  .item-row select, .item-row input[type=text] { flex: 1; min-width: 0; background: var(--card); border: 1px solid var(--border); color: var(--text); padding: 10px; border-radius: 10px; font-size: 13px; }
+  .item-row input[type=number] { width: 60px; background: var(--card); border: 1px solid var(--border); color: var(--accent); padding: 10px 4px; border-radius: 10px; font-size: 14px; text-align: center; font-weight: 600; }
+  .item-row .rest-icon { color: var(--red); font-size: 16px; }
+  .item-row .time-icon { color: var(--blue); font-size: 16px; }
+  .item-row .unit { color: var(--muted); font-size: 11px; min-width: 30px; }
+  .icon-btn { background: var(--card); border: 1px solid var(--border); color: var(--text2); width: 36px; height: 36px; border-radius: 10px; cursor: pointer; font-size: 14px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; transition: all 0.2s; }
+  .icon-btn.del { color: var(--red); }
+  .icon-btn:active { background: var(--border); }
+  .set-actions { display: flex; gap: 8px; margin-top: 10px; }
+  .set-actions button { flex: 1; background: var(--bg); border: 1px solid var(--border); color: var(--text2); padding: 10px; border-radius: 10px; font-size: 12px; cursor: pointer; font-weight: 500; transition: all 0.2s; }
+  .set-actions button:active { background: var(--card); color: var(--text); }
 
-  .top-bar { display:flex; justify-content:space-between; align-items:center; padding:4px 0 12px; }
-  .timer-display { font-size:34px; font-weight:700; color:var(--accent); text-align:center; margin:20px 0; font-variant-numeric:tabular-nums; }
-  .set-indicator { text-align:center; color:var(--text2); font-size:13px; margin-bottom:12px; }
-  .exercise-display { text-align:center; padding:32px 16px; }
-  .exercise-display .ex-name { font-size:21px; font-weight:600; color:var(--text); margin-bottom:10px; }
-  .exercise-display .ex-reps { font-size:72px; font-weight:800; color:var(--accent); letter-spacing:-2px; font-variant-numeric:tabular-nums; line-height:1; }
-  .exercise-display .ex-reps.red { color:var(--red); }
-  .exercise-display .ex-reps-label { font-size:13px; color:var(--muted); margin-top:6px; }
-  .progress-bar { height:3px; background:var(--card2); border-radius:2px; margin:20px 0; overflow:hidden; }
-  .progress-bar .fill { height:100%; background:var(--accent); transition:width .3s; }
-  .tap-hint { text-align:center; color:var(--muted); font-size:13px; margin-top:36px; animation:pulse 2.5s infinite; }
-  .tap-hint.ready { color:var(--accent); animation:pulse 1s infinite; }
-  @keyframes pulse { 0%,100% { opacity:.35; } 50% { opacity:.9; } }
+  .program-tabs { display: flex; gap: 8px; margin: 16px 0; overflow-x: auto; padding-bottom: 8px; scrollbar-width: none; }
+  .program-tabs::-webkit-scrollbar { display: none; }
+  .program-tabs button { flex: 0 0 auto; min-width: 100px; padding: 12px 16px; border: 1px solid var(--border); border-radius: 14px; background: var(--card); color: var(--text2); font-size: 13px; cursor: pointer; font-weight: 500; transition: all 0.2s; }
+  .program-tabs button.active { border-color: var(--accent); color: var(--accent); background: rgba(251, 191, 36, 0.1); }
+  .program-tabs button.add-tab { min-width: 44px; max-width: 44px; font-size: 22px; color: var(--accent); padding: 0; display: flex; align-items: center; justify-content: center; }
 
-  .rest-screen { display:flex; flex-direction:column; align-items:center; justify-content:center; min-height:78vh; }
-  .rest-screen .rest-label { font-size:14px; color:var(--text2); margin-bottom:12px; text-transform:uppercase; letter-spacing:2px; }
-  .rest-screen .rest-timer { font-size:72px; font-weight:800; color:var(--red); font-variant-numeric:tabular-nums; letter-spacing:-2px; line-height:1; }
-  .rest-screen .rest-hint { color:var(--muted); margin-top:24px; font-size:13px; }
+  .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 16px 0; }
+  .stat-card { background: var(--card); border-radius: 16px; padding: 16px; }
+  .stat-card .label { font-size: 11px; color: var(--muted); font-weight: 500; }
+  .stat-card .value { font-size: 22px; font-weight: 700; color: var(--accent); margin-top: 6px; }
+  .exercise-list { margin: 16px 0; }
+  .exercise-row { display: flex; justify-content: space-between; align-items: center; background: var(--card); padding: 14px 16px; border-radius: 14px; margin-bottom: 8px; }
+  .exercise-row .name { font-size: 14px; color: var(--text2); font-weight: 500; }
+  .exercise-row .reps { color: var(--accent); font-weight: 700; font-size: 15px; }
+  .exercise-row .reps.blue { color: var(--blue); }
+  .total-row { display: flex; justify-content: space-between; padding: 16px; background: var(--card2); border-radius: 14px; margin-top: 12px; font-weight: 600; font-size: 15px; }
+  .total-row .value { color: var(--accent); }
 
-  .back-btn { background:none; border:none; color:var(--text2); font-size:22px; cursor:pointer; padding:8px; }
+  .exercise-display { text-align: center; padding: 40px 16px; }
+  .exercise-display .ex-name { font-size: 20px; font-weight: 600; margin-bottom: 12px; color: var(--text2); }
+  .exercise-display .ex-reps { font-size: 80px; font-weight: 800; color: var(--accent); letter-spacing: -3px; line-height: 1; }
+  .exercise-display .ex-reps.red { color: var(--red); }
+  .exercise-display .ex-reps-label { font-size: 13px; color: var(--muted); margin-top: 8px; font-weight: 500; }
+  .set-indicator { text-align: center; color: var(--text2); font-size: 13px; margin-bottom: 16px; font-weight: 500; }
+  .progress-bar { height: 4px; background: var(--card2); border-radius: 2px; margin: 24px 0; overflow: hidden; }
+  .progress-bar .fill { height: 100%; background: var(--accent); transition: width 0.3s ease; }
+  .tap-hint { text-align: center; color: var(--muted); font-size: 14px; margin-top: 40px; animation: pulse 2.5s infinite; font-weight: 500; }
+  .tap-hint.ready { color: var(--accent); animation: pulse 1s infinite; }
+  @keyframes pulse { 0%, 100% { opacity: 0.4; } 50% { opacity: 1; } }
+  
+  .rest-screen { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 78vh; }
+  .rest-screen .rest-label { font-size: 13px; color: var(--text2); margin-bottom: 16px; font-weight: 600; }
+  .rest-screen .rest-timer { font-size: 80px; font-weight: 800; color: var(--red); line-height: 1; letter-spacing: -2px; }
+  .rest-screen .rest-hint { color: var(--muted); margin-top: 24px; font-size: 14px; }
+  .timer-display { font-size: 36px; font-weight: 700; color: var(--accent); text-align: center; margin: 24px 0; }
+  .back-btn { background: none; border: none; color: var(--text); font-size: 24px; cursor: pointer; padding: 8px; display: flex; align-items: center; justify-content: center; }
 
-  .modal-overlay { display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,.85); z-index:100; justify-content:flex-end; align-items:flex-end; }
-  .modal-overlay.active { display:flex; }
-  .modal { background:#141416; border:1px solid var(--border); border-bottom:none; border-radius:20px 20px 0 0; padding:14px 18px calc(30px + var(--safe-bottom)); width:100%; max-width:520px; margin:0 auto; max-height:88vh; overflow-y:auto; animation:slideUp .25s ease-out; position:relative; }
-  .modal::before { content:''; display:block; width:36px; height:4px; border-radius:2px; background:#2c2c30; margin:0 auto 16px; }
-  @keyframes slideUp { from { transform:translateY(100%); } to { transform:translateY(0); } }
-  .modal h2 { color:var(--text); margin-bottom:18px; font-size:18px; font-weight:700; }
+  .note-textarea { width: 100%; min-height: 90px; background: var(--bg); border: 1px solid var(--border); color: var(--text); padding: 14px; border-radius: 14px; font-size: 14px; resize: vertical; font-family: inherit; line-height: 1.5; }
+  .note-textarea:focus { border-color: var(--accent); outline: none; }
+  .history-item { background: var(--card); padding: 16px; border-radius: 14px; margin-bottom: 10px; display: flex; justify-content: space-between; gap: 12px; }
+  .history-item .h-info { flex: 1; }
+  .history-item .h-date { color: var(--muted); font-size: 12px; font-weight: 500; }
+  .history-item .h-time { color: var(--text); font-weight: 600; font-size: 15px; margin-top: 4px; }
+  .history-item .h-note { color: var(--text2); font-size: 12px; margin-top: 6px; font-style: italic; line-height: 1.4; }
+  .history-item .h-edit { background: var(--card2); border: 1px solid var(--border); color: var(--text2); width: 36px; height: 36px; border-radius: 10px; cursor: pointer; font-size: 14px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
 
-  .exercise-detail-row { display:flex; justify-content:space-between; align-items:center; padding:14px 16px; background:var(--card); border:1px solid var(--border); border-radius:12px; margin-bottom:6px; }
-  .exercise-detail-row .name { font-size:14px; color:var(--text2); }
-  .exercise-detail-row .reps { font-size:17px; font-weight:700; color:var(--accent); font-variant-numeric:tabular-nums; }
-  .exercise-detail-row .reps.blue { color:var(--blue); }
+  .qa-exercise { text-align: center; color: var(--accent); font-size: 16px; font-weight: 600; margin-bottom: 20px; }
+  .qa-section-label { font-size: 11px; color: var(--muted); font-weight: 600; margin-bottom: 10px; }
+  .qa-presets { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+  .qa-preset-btn { flex: 1; min-width: 50px; padding: 12px 4px; background: var(--card2); border: 1px solid var(--border); border-radius: 12px; color: var(--text); font-size: 15px; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+  .qa-preset-btn:active { background: var(--accent); color: #000; border-color: var(--accent); }
+  .qa-custom-input { width: 100%; background: var(--bg); border: 1px solid var(--border); color: var(--accent); padding: 14px; border-radius: 14px; font-size: 20px; text-align: center; font-weight: 700; margin-bottom: 16px; }
+  .qa-custom-input:focus { border-color: var(--accent); outline: none; }
+  .qa-date-options { display: flex; gap: 8px; margin-bottom: 12px; }
+  .qa-date-btn { flex: 1; padding: 12px 6px; background: var(--card2); border: 1px solid var(--border); border-radius: 12px; color: var(--text2); font-size: 13px; font-weight: 500; cursor: pointer; transition: all 0.2s; }
+  .qa-date-btn.active { background: var(--green); color: #000; border-color: var(--green); font-weight: 600; }
+  .qa-date-picker { width: 100%; background: var(--bg); border: 1px solid var(--border); color: var(--text); padding: 12px; border-radius: 12px; font-size: 14px; margin-bottom: 16px; color-scheme: dark; display: none; }
+  .qa-buttons { display: flex; gap: 10px; margin-top: 16px; }
+  .qa-buttons .btn { margin-top: 0; }
 
-  .total-row { display:flex; justify-content:space-between; padding:14px 16px; background:var(--card2); border:1px solid var(--border); border-radius:12px; margin-top:10px; font-weight:600; }
-  .total-row .value { color:var(--accent); font-variant-numeric:tabular-nums; }
-  .total-row .value.blue { color:var(--blue); }
-
-  .history-item { background:var(--card); border:1px solid var(--border); padding:13px 14px; border-radius:12px; margin-bottom:6px; display:flex; justify-content:space-between; }
-  .history-item .h-date { color:var(--text2); font-size:12px; }
-  .history-item .h-time { color:var(--accent); font-weight:600; font-variant-numeric:tabular-nums; }
-
-  .close-modal { float:right; background:var(--card2); border:1px solid var(--border); color:var(--text2); width:34px; height:34px; border-radius:10px; font-size:16px; cursor:pointer; }
-  .no-data { text-align:center; color:var(--muted); padding:36px 20px; font-size:14px; }
-
-  .edit-form-row { display:flex; gap:8px; align-items:center; background:var(--card); border:1px solid var(--border); padding:10px 12px; border-radius:12px; margin-bottom:6px; }
-  .edit-form-row input[type=number] { width:64px; background:var(--bg); border:1px solid var(--border); color:var(--accent); padding:10px 4px; border-radius:10px; font-size:16px; text-align:center; font-weight:700; font-variant-numeric:tabular-nums; }
-  .edit-form-row input[type=number]:focus { border-color:var(--accent); outline:none; }
-  .name-input { flex:1; min-width:0; background:var(--bg); border:1px solid var(--border); color:var(--text); padding:10px; border-radius:10px; font-size:13px; }
-  .name-input:focus { border-color:var(--accent); outline:none; }
-  .name-input::placeholder { color:var(--muted); }
-
-  .icon-btn { background:var(--card2); border:1px solid var(--border); color:var(--text2); width:30px; height:34px; border-radius:8px; cursor:pointer; font-size:11px; }
-  .icon-btn:active { background:#2a2a2e; }
-  .icon-btn.del { color:var(--red); }
-  .icon-btn.ok { color:var(--accent); }
-
-  .set-block { background:var(--card); border:1px solid var(--border); border-radius:14px; padding:12px; margin-bottom:12px; }
-  .set-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; }
-  .set-header .set-name { color:var(--accent); font-weight:700; font-size:14px; }
-  .item-row { display:flex; gap:6px; align-items:center; background:var(--bg); border:1px solid var(--border); padding:9px; border-radius:10px; margin-bottom:6px; }
-  .item-row input[type=text] { flex:1; min-width:0; background:var(--card); border:1px solid var(--border); color:var(--text); padding:9px; border-radius:8px; font-size:13px; }
-  .item-row input[type=number] { width:54px; background:var(--card); border:1px solid var(--border); color:var(--accent); padding:9px 4px; border-radius:8px; font-size:14px; text-align:center; font-weight:700; }
-  .item-row .rest-icon { color:var(--red); font-size:15px; }
-  .item-row .time-icon { color:var(--blue); font-size:15px; }
-  .item-row .unit { color:var(--muted); font-size:10px; }
-  .set-actions { display:flex; gap:6px; margin-top:8px; }
-  .set-actions button { flex:1; background:var(--card2); border:1px solid var(--border); color:var(--text2); padding:11px; border-radius:10px; font-size:12px; cursor:pointer; font-weight:500; }
-  .set-actions button:active { background:#2a2a2e; }
-
-  /* Splash */
-  #splash { position:fixed; inset:0; background:var(--bg); display:flex; flex-direction:column; align-items:center; justify-content:center; z-index:9999; transition:opacity .4s; }
-  #splash.hide { opacity:0; pointer-events:none; }
-  #splash .sp-icon { width:96px; height:96px; margin-bottom:20px; }
-  #splash .sp-text { color:var(--accent); font-size:18px; font-weight:700; letter-spacing:-0.3px; }
-  #splash .sp-sub { color:var(--muted); font-size:12px; margin-top:6px; }
-
-  /* Toast */
-  #toast { position:fixed; bottom:calc(20px + var(--safe-bottom)); left:50%; transform:translateX(-50%) translateY(100px); background:#141416; border:1px solid var(--border); color:var(--text); padding:12px 18px; border-radius:12px; font-size:14px; z-index:9998; opacity:0; transition:all .3s; box-shadow:0 8px 24px rgba(0,0,0,.5); pointer-events:none; max-width:calc(100% - 40px); text-align:center; }
-  #toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
+  #splash { position: fixed; inset: 0; background: var(--bg); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 9999; transition: opacity 0.5s; }
+  #splash.hide { opacity: 0; pointer-events: none; }
+  #splash .sp-icon { width: 96px; height: 96px; margin-bottom: 24px; }
+  #splash .sp-text { color: var(--accent); font-size: 20px; font-weight: 700; letter-spacing: -0.5px; }
+  #toast { position: fixed; bottom: calc(30px + var(--safe-bottom)); left: 50%; transform: translateX(-50%) translateY(100px); background: var(--card2); border: 1px solid var(--border); color: var(--text); padding: 14px 24px; border-radius: 16px; font-size: 14px; font-weight: 500; z-index: 9998; opacity: 0; transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); pointer-events: none; max-width: calc(100% - 40px); text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+  #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 </style>
 </head>
 <body>
 
-<!-- SPLASH -->
 <div id="splash">
   <svg class="sp-icon" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
-    <rect width="512" height="512" rx="96" fill="#0b0b0c"/>
-    <circle cx="256" cy="256" r="80" fill="none" stroke="#f5c842" stroke-width="40"/>
-    <rect x="116" y="236" width="280" height="40" fill="#f5c842"/>
-    <circle cx="116" cy="256" r="50" fill="#f5c842"/>
-    <circle cx="396" cy="256" r="50" fill="#f5c842"/>
+    <rect width="512" height="512" rx="96" fill="#0f0f11"/>
+    <circle cx="256" cy="256" r="80" fill="none" stroke="#fbbf24" stroke-width="40"/>
+    <rect x="116" y="236" width="280" height="40" fill="#fbbf24"/>
+    <circle cx="116" cy="256" r="50" fill="#fbbf24"/>
+    <circle cx="396" cy="256" r="50" fill="#fbbf24"/>
   </svg>
   <div class="sp-text">Тренировки</div>
-  <div class="sp-sub">загрузка...</div>
 </div>
-
-<!-- TOAST -->
 <div id="toast"></div>
 
-<!-- ДАШБОРД -->
-<div id="dashboardScreen" class="screen active">
-  <div class="dashboard-header">
-    <h1>Моя статистика</h1>
-    <div class="subtitle">Общий прогресс</div>
-    <span class="app-badge" id="appBadge" style="display:none;">● Приложение</span>
-  </div>
-
-  <div class="install-banner" id="installBanner">
-    <div class="ib-icon">📲</div>
-    <div class="ib-text">
-      <div class="ib-title">Установить приложение</div>
-      <div class="ib-sub">На главный экран, работает оффлайн</div>
-    </div>
-    <button class="ib-close" onclick="dismissInstall()">✕</button>
-  </div>
-  <button class="btn btn-install" id="installBtn" style="display:none;" onclick="installApp()">📲 Установить на телефон</button>
-
-  <div class="big-stat" onclick="showAllTimeDetails()">
-    <div class="big-label">Всего повторений</div>
-    <div class="big-value" id="totalAllTime">0</div>
-    <div class="big-sub" id="totalAllTimeSub">0 тренировок</div>
-  </div>
-  <div class="big-stat time-card" onclick="showTimeDetails()">
-    <div class="big-label">⏱ Время тренировок</div>
-    <div class="big-value" id="totalTimeAll">0 мин</div>
-    <div class="big-sub">суммарное время • нажмите для деталей</div>
-  </div>
-  <div class="stats-row" id="dashboardStats"></div>
-  <div class="section-title">Последние дни</div>
-  <div class="day-list" id="dayList"></div>
-  <button class="btn btn-primary" onclick="showScreen('programScreen')">К тренировкам</button>
-  <button class="btn btn-secondary" onclick="showCalendar()">Календарь</button>
-  <button class="btn btn-secondary" onclick="showInstallHelp()">Как установить приложение</button>
-</div>
-
-<!-- КАЛЕНДАРЬ -->
-<div id="calendarScreen" class="screen">
+<!-- ГЛАВНЫЙ ЭКРАН -->
+<div id="homeScreen" class="screen active">
   <div class="top-bar">
-    <button class="back-btn" onclick="showScreen('dashboardScreen')">←</button>
-    <span style="color:var(--text);font-size:15px;font-weight:600;">Календарь</span>
-    <div style="width:38px;"></div>
+    <div class="app-title"><span class="dot"></span>Тренировки</div>
+    <button class="gear-btn" onclick="showMainSettings()">⚙️</button>
   </div>
-  <div class="calendar-nav">
-    <button onclick="changeMonth(-1)">‹</button>
-    <div class="month-label" id="monthLabel"></div>
-    <button onclick="changeMonth(1)">›</button>
+
+  <div class="streak-card">
+    <div>
+      <div class="streak-num" id="streakNum">0 🔥</div>
+      <div class="streak-label">дней подряд</div>
+    </div>
   </div>
-  <div class="calendar-grid" id="calendarGrid"></div>
-  <div style="margin-top:20px;">
-    <div class="section-title">Детали дня</div>
-    <div id="dayDetails"></div>
+
+  <div class="goal-card" id="weekGoalCard"></div>
+
+  <div class="chips" id="categoryChips"></div>
+  <div id="exerciseCards"></div>
+
+  <div class="bottom-actions">
+    <button class="btn btn-primary" onclick="openProgramPicker()">▶ Начать тренировку</button>
+    <button class="btn btn-secondary" onclick="openAddExercise()">+ Добавить упражнение</button>
   </div>
 </div>
 
 <!-- ПРОГРАММЫ -->
 <div id="programScreen" class="screen">
   <div class="top-bar">
-    <button class="back-btn" onclick="showScreen('dashboardScreen')">←</button>
-    <span style="color:var(--text);font-size:15px;font-weight:600;">Программа</span>
-    <div style="width:38px;"></div>
+    <button class="back-btn" onclick="showScreen('homeScreen')">←</button>
+    <span style="color:var(--text);font-size:16px;font-weight:600;">Программы</span>
+    <button class="gear-btn" onclick="showProgramSettings()">⚙️</button>
   </div>
-  <div class="header"><h1>Тренировка</h1></div>
   <div class="program-tabs" id="programTabs"></div>
   <div class="stats-grid" id="statsGrid"></div>
   <div class="exercise-list" id="exerciseList"></div>
   <div class="total-row" id="totalRow"></div>
-  <button class="btn btn-primary" onclick="startWorkout()">Начать тренировку</button>
-  <button class="btn btn-secondary" onclick="openEditor()">Настроить сеты</button>
+  <button class="btn btn-primary" onclick="startProgramWorkout()">Начать тренировку</button>
+  <button class="btn btn-secondary" onclick="openConstructor()">🛠 Конструктор</button>
   <button class="btn btn-secondary" onclick="showHistory()">История</button>
 </div>
 
@@ -298,10 +280,9 @@
     <div class="ex-reps-label">повторений</div>
     <div class="ex-reps" id="exReps"></div>
   </div>
-  <div class="tap-hint">Нажмите чтобы продолжить</div>
+  <div class="tap-hint">Нажмите, чтобы продолжить</div>
 </div>
 
-<!-- УПРАЖНЕНИЕ НА ВРЕМЯ -->
 <div id="timeScreen" class="screen">
   <div class="top-bar">
     <button class="back-btn" onclick="quitWorkout()">←</button>
@@ -318,914 +299,794 @@
   <div class="tap-hint" id="timeHint">Выполняйте упражнение...</div>
 </div>
 
-<!-- ОТДЫХ -->
 <div id="restScreen" class="screen">
   <div class="rest-screen">
     <div class="rest-label">Отдых</div>
     <div class="rest-timer" id="restTimer">1:00</div>
-    <div class="rest-hint">Нажмите чтобы пропустить</div>
+    <div class="rest-hint">Нажмите, чтобы пропустить</div>
   </div>
 </div>
 
-<!-- ФИНИШ -->
 <div id="finishScreen" class="screen">
-  <div style="text-align:center;padding-top:70px;">
-    <div style="font-size:56px;margin-bottom:14px;">🏆</div>
-    <h2 style="color:var(--text);font-size:21px;font-weight:700;margin-bottom:10px;">Тренировка завершена</h2>
+  <div style="text-align:center;padding-top:60px;">
+    <div style="font-size:64px;margin-bottom:16px;">🏆</div>
+    <h2 style="color:var(--text);font-size:22px;font-weight:700;margin-bottom:12px;">Тренировка завершена</h2>
     <div class="timer-display" id="finishTime"></div>
-    <div id="finishStats" style="color:var(--muted);margin-bottom:30px;font-size:14px;"></div>
-    <button class="btn btn-primary" onclick="goHome()">На главную</button>
+    <div id="finishStats" style="color:var(--muted);margin-bottom:24px;font-size:14px;font-weight:500;"></div>
+    <textarea class="note-textarea" id="finishNote" placeholder="Заметка (необязательно)..."></textarea>
+    <button class="btn btn-primary" onclick="saveFinishNote()" style="margin-top:16px;">Сохранить</button>
   </div>
 </div>
 
 <!-- МОДАЛКИ -->
-<div class="modal-overlay" id="statsModal">
+<div class="modal-overlay" id="programPickerModal">
   <div class="modal">
-    <button class="close-modal" onclick="closeStatsModal()">✕</button>
-    <h2 id="statsModalTitle">Детализация</h2>
-    <div id="statsModalContent"></div>
-    <div id="statsModalTotals"></div>
+    <button class="close-modal" onclick="closeModal('programPickerModal')">✕</button>
+    <h2>Выбор тренировки</h2>
+    <div id="programPickerList"></div>
   </div>
 </div>
 
-<div class="modal-overlay" id="repsModal">
+<div class="modal-overlay" id="mainSettingsModal">
   <div class="modal">
-    <button class="close-modal" onclick="closeRepsModal()">✕</button>
-    <h2>Всего повторений</h2>
-    <div id="repsDetails"></div>
-    <div id="repsTotals"></div>
+    <button class="close-modal" onclick="closeModal('mainSettingsModal')">✕</button>
+    <h2>Настройки</h2>
+    <div class="settings-group">
+      <h3>Цель по тренировкам</h3>
+      <div class="settings-row">
+        <div class="sr-label">Период</div>
+        <select class="select-input" id="wsGoalPeriod">
+          <option value="day">В день</option>
+          <option value="week">В неделю</option>
+          <option value="month">В месяц</option>
+        </select>
+      </div>
+      <div class="settings-row">
+        <div class="sr-label">Цель (тренировок)</div>
+        <input type="number" class="num-input" id="wsGoalTarget" value="3" min="1">
+      </div>
+    </div>
+    <div class="settings-group">
+      <h3>Звуки</h3>
+      <div class="settings-row">
+        <div class="sr-label">Звуковые сигналы</div>
+        <div class="toggle" id="soundToggle" onclick="toggleSound()"></div>
+      </div>
+      <div class="settings-row">
+        <div class="sr-label">Тип звука</div>
+        <select class="select-input" id="soundType" onchange="changeSoundType()">
+          <option value="beep">Бип</option><option value="bell">Колокольчик</option><option value="chime">Перезвон</option><option value="vibro">Только вибро</option>
+        </select>
+      </div>
+      <div class="settings-row">
+        <div class="sr-label">Громкость</div>
+        <input type="range" class="range-input" id="soundVolume" min="0" max="100" value="70" onchange="changeSoundVolume()">
+      </div>
+      <button class="btn btn-secondary" onclick="testSound()" style="margin-top:12px;">🔊 Тест</button>
+    </div>
+    <div class="settings-group">
+      <h3>Данные</h3>
+      <button class="btn btn-secondary" onclick="exportData()" style="margin-top:0;">📤 Экспорт</button>
+      <button class="btn btn-secondary" onclick="document.getElementById('importFile').click()">📥 Импорт</button>
+      <input type="file" id="importFile" style="display:none;" accept=".json" onchange="importData(event)">
+    </div>
+    <button class="btn btn-primary" onclick="saveMainSettings()">Сохранить</button>
+  </div>
+</div>
+
+<div class="modal-overlay" id="cardSettingsModal">
+  <div class="modal">
+    <button class="close-modal" onclick="closeModal('cardSettingsModal')">✕</button>
+    <h2>Настройка упражнения</h2>
+    <div class="settings-group">
+      <div class="settings-row"><div class="sr-label">Категория</div><select class="select-input" id="csCategory"></select></div>
+      <div class="settings-row"><div class="sr-label">Цель: период</div>
+        <select class="select-input" id="csGoalPeriod"><option value="day">В день</option><option value="week">В неделю</option><option value="month">В месяц</option></select>
+      </div>
+      <div class="settings-row"><div class="sr-label">Цель: значение</div><input type="number" class="num-input" id="csGoalTarget" min="1"></div>
+    </div>
+    <button class="btn btn-primary" onclick="saveCardSettings()">Сохранить</button>
+    <button class="btn btn-secondary" id="csGoalToggle" style="margin-top:10px;"></button>
+    <button class="btn btn-danger-soft" onclick="deleteLibraryExercise()" style="margin-top:10px;">Удалить упражнение</button>
+  </div>
+</div>
+
+<div class="modal-overlay" id="addExerciseModal">
+  <div class="modal">
+    <button class="close-modal" onclick="closeModal('addExerciseModal')">✕</button>
+    <h2>Новое упражнение</h2>
+    <input type="text" class="text-input" id="newExName" placeholder="Название">
+    <div class="settings-group">
+      <div class="settings-row"><div class="sr-label">Тип</div>
+        <select class="select-input" id="newExType"><option value="reps">Повторения</option><option value="time">На время (сек)</option></select>
+      </div>
+      <div class="settings-row"><div class="sr-label">Категория</div><select class="select-input" id="newExCategory"></select></div>
+    </div>
+    <button class="btn btn-primary" onclick="saveAddExercise()">Сохранить</button>
+  </div>
+</div>
+
+<div class="modal-overlay" id="quickAddModal">
+  <div class="modal">
+    <button class="close-modal" onclick="closeModal('quickAddModal')">✕</button>
+    <h2 style="text-align:center;">Добавить</h2>
+    <div class="qa-exercise" id="qaExerciseName"></div>
+    <div class="qa-section-label">Количество</div>
+    <div class="qa-presets">
+      <button class="qa-preset-btn" onclick="setQAValue(1)">+1</button>
+      <button class="qa-preset-btn" onclick="setQAValue(5)">+5</button>
+      <button class="qa-preset-btn" onclick="setQAValue(10)">+10</button>
+      <button class="qa-preset-btn" onclick="setQAValue(25)">+25</button>
+      <button class="qa-preset-btn" onclick="setQAValue(50)">+50</button>
+      <button class="qa-preset-btn" onclick="setQAValue(100)">+100</button>
+    </div>
+    <div class="qa-section-label">Своё значение</div>
+    <input type="number" class="qa-custom-input" id="qaCustomValue" placeholder="0" min="0">
+    <div class="qa-section-label">Дата</div>
+    <div class="qa-date-options">
+      <button class="qa-date-btn active" id="qaDateToday" onclick="setQADate('today')">📅 Сегодня</button>
+      <button class="qa-date-btn" id="qaDatePick" onclick="setQADate('pick')">📆 Выбрать</button>
+    </div>
+    <input type="date" class="qa-date-picker" id="qaDatePicker">
+    <div class="qa-buttons">
+      <button class="btn btn-secondary" onclick="closeModal('quickAddModal')">Отмена</button>
+      <button class="btn btn-primary" onclick="confirmQuickAdd()">Добавить</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="constructorModal">
+  <div class="modal">
+    <button class="close-modal" onclick="closeModal('constructorModal')">✕</button>
+    <h2>Конструктор тренировки</h2>
+    <div id="constructorContent"></div>
+    <button class="btn btn-secondary" onclick="addCSet()">+ Добавить сет</button>
+    <button class="btn btn-primary" onclick="saveAndStartConstructor()" style="margin-top:10px;">Сохранить и начать</button>
+    <button class="btn btn-secondary" onclick="saveConstructor()" style="margin-top:10px;">Просто сохранить</button>
+  </div>
+</div>
+
+<div class="modal-overlay" id="programSettingsModal">
+  <div class="modal">
+    <button class="close-modal" onclick="closeModal('programSettingsModal')">✕</button>
+    <h2>Настройки программы</h2>
+    <button class="btn btn-secondary" onclick="closeModal('programSettingsModal');openEditor();" style="margin-top:0;">Настроить сеты</button>
+    <button class="btn btn-secondary" onclick="duplicateProgram()" style="margin-top:10px;">Скопировать программу</button>
+    <button class="btn btn-danger-soft" onclick="deleteProgram()" style="margin-top:10px;">Удалить программу</button>
   </div>
 </div>
 
 <div class="modal-overlay" id="editorModal">
   <div class="modal">
-    <button class="close-modal" onclick="closeEditor()">✕</button>
+    <button class="close-modal" onclick="closeModal('editorModal')">✕</button>
     <h2>Настройка сетов</h2>
-    <div style="margin-bottom:14px;">
-      <label style="color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:1px;">Название</label>
-      <input id="progName" style="width:100%;background:var(--card);border:1px solid var(--border);color:var(--text);padding:12px;border-radius:12px;margin-top:6px;font-size:14px;">
+    <div style="margin-bottom:16px;">
+      <label style="color:var(--muted);font-size:12px;font-weight:500;">Название</label>
+      <input id="progName" class="text-input" style="margin-top:8px;">
     </div>
     <div id="editorContent"></div>
-    <button class="btn btn-secondary" onclick="addSet()" style="margin-top:4px;">+ Добавить сет</button>
-    <button class="btn btn-primary" onclick="saveEditor()" style="margin-top:8px;">Сохранить</button>
-    <button class="btn btn-danger-soft" onclick="deleteProgram()">Удалить программу</button>
-    <button class="btn btn-secondary" onclick="closeEditor()">Отмена</button>
+    <button class="btn btn-secondary" onclick="addSet()">+ Добавить сет</button>
+    <button class="btn btn-primary" onclick="saveEditor()" style="margin-top:10px;">Сохранить</button>
   </div>
 </div>
 
 <div class="modal-overlay" id="historyModal">
   <div class="modal">
-    <button class="close-modal" onclick="closeHistory()">✕</button>
+    <button class="close-modal" onclick="closeModal('historyModal')">✕</button>
     <h2>История тренировок</h2>
     <div id="historyList"></div>
   </div>
 </div>
 
-<div class="modal-overlay" id="helpModal">
+<div class="modal-overlay" id="noteModal">
   <div class="modal">
-    <button class="close-modal" onclick="closeHelp()">✕</button>
-    <h2>📲 Как установить</h2>
-    <div id="helpContent" style="color:var(--text2);font-size:14px;line-height:1.6;"></div>
-    <button class="btn btn-primary" onclick="closeHelp()" style="margin-top:16px;">Понятно</button>
+    <button class="close-modal" onclick="closeModal('noteModal')">✕</button>
+    <h2>Заметка</h2>
+    <textarea class="note-textarea" id="noteTextarea"></textarea>
+    <button class="btn btn-primary" onclick="saveNote()" style="margin-top:16px;">Сохранить</button>
   </div>
 </div>
 
 <script>
-// ===== PWA: MANIFEST + SERVICE WORKER =====
-(function initPWA() {
-  const iconSvg = `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><rect width='512' height='512' rx='96' fill='#0b0b0c'/><circle cx='256' cy='256' r='80' fill='none' stroke='#f5c842' stroke-width='40'/><rect x='116' y='236' width='280' height='40' fill='#f5c842'/><circle cx='116' cy='256' r='50' fill='#f5c842'/><circle cx='396' cy='256' r='50' fill='#f5c842'/></svg>`;
-  const iconData = 'data:image/svg+xml;base64,' + btoa(iconSvg);
-
-  const manifest = {
-    name: "Трекер тренировки",
-    short_name: "Тренировки",
-    description: "Персональный трекер тренировок",
-    start_url: ".",
-    scope: ".",
-    display: "standalone",
-    orientation: "portrait",
-    background_color: "#0b0b0c",
-    theme_color: "#0b0b0c",
-    icons: [
-      { src: iconData, sizes: "192x192", type: "image/svg+xml", purpose: "any maskable" },
-      { src: iconData, sizes: "512x512", type: "image/svg+xml", purpose: "any maskable" }
-    ]
-  };
-  const manifestBlob = new Blob([JSON.stringify(manifest)], { type: 'application/json' });
-  const manifestUrl = URL.createObjectURL(manifestBlob);
-  const link = document.createElement('link');
-  link.rel = 'manifest';
-  link.href = manifestUrl;
-  document.head.appendChild(link);
-
-  // Service Worker
-  if ('serviceWorker' in navigator) {
-    const swCode = `
-      const CACHE = 'workout-tracker-v1';
-      self.addEventListener('install', e => {
-        self.skipWaiting();
-      });
-      self.addEventListener('activate', e => {
-        e.waitUntil(self.clients.claim());
-      });
-      self.addEventListener('fetch', e => {
-        if (e.request.method !== 'GET') return;
-        e.respondWith(
-          caches.open(CACHE).then(cache =>
-            cache.match(e.request).then(cached => {
-              const fetchPromise = fetch(e.request).then(response => {
-                if (response && response.status === 200) cache.put(e.request, response.clone());
-                return response;
-              }).catch(() => cached);
-              return cached || fetchPromise;
-            })
-          )
-        );
-      });
-    `;
-    const swBlob = new Blob([swCode], { type: 'application/javascript' });
-    const swUrl = URL.createObjectURL(swBlob);
-    navigator.serviceWorker.register(swUrl).catch(() => {});
-  }
+(function initPWA(){
+  const iconSvg=`<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><rect width='512' height='512' rx='96' fill='#0f0f11'/><circle cx='256' cy='256' r='80' fill='none' stroke='#fbbf24' stroke-width='40'/><rect x='116' y='236' width='280' height='40' fill='#fbbf24'/><circle cx='116' cy='256' r='50' fill='#fbbf24'/><circle cx='396' cy='256' r='50' fill='#fbbf24'/></svg>`;
+  const iconData='data:image/svg+xml;base64,'+btoa(iconSvg);
+  const manifest={name:"Трекер тренировки",short_name:"Тренировки",start_url:".",scope:".",display:"standalone",orientation:"portrait",background_color:"#0f0f11",theme_color:"#0f0f11",icons:[{src:iconData,sizes:"192x192",type:"image/svg+xml",purpose:"any maskable"},{src:iconData,sizes:"512x512",type:"image/svg+xml",purpose:"any maskable"}]};
+  const link=document.createElement('link');link.rel='manifest';link.href=URL.createObjectURL(new Blob([JSON.stringify(manifest)],{type:'application/json'}));document.head.appendChild(link);
+  if('serviceWorker' in navigator){const sw=`const C='wt-v3';self.addEventListener('install',e=>self.skipWaiting());self.addEventListener('activate',e=>{e.waitUntil(self.clients.claim());caches.keys().then(ks=>Promise.all(ks.filter(k=>k!==C).map(k=>caches.delete(k))));});self.addEventListener('fetch',e=>{if(e.request.method!=='GET')return;e.respondWith(caches.open(C).then(c=>c.match(e.request).then(r=>{const f=fetch(e.request).then(res=>{if(res&&res.status===200)c.put(e.request,res.clone());return res;}).catch(()=>r);return r||f;})));});`;navigator.serviceWorker.register(URL.createObjectURL(new Blob([sw],{type:'application/javascript'}))).catch(()=>{});}
 })();
 
-// ===== INSTALL PROMPT =====
-let deferredPrompt = null;
-let installDismissed = localStorage.getItem('installDismissed') === '1';
+let toastTimer=null;
+function showToast(m,d=2500){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');if(toastTimer)clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove('show'),d);}
+window.addEventListener('load',()=>{setTimeout(()=>{const s=document.getElementById('splash');s.classList.add('hide');setTimeout(()=>s.remove(),500);},400);});
 
-window.addEventListener('beforeinstallprompt', (e) => {
-  e.preventDefault();
-  deferredPrompt = e;
-  const btn = document.getElementById('installBtn');
-  if (btn) btn.style.display = 'block';
-  if (!installDismissed) {
-    const banner = document.getElementById('installBanner');
-    if (banner) banner.classList.add('visible');
-  }
-});
+const CATEGORIES=[
+  {key:'none',label:'Без категории',emoji:''},
+  {key:'cardio',label:'Кардио',emoji:'❤️'},
+  {key:'strength',label:'Сила',emoji:'💪'},
+  {key:'stretch',label:'Растяжка',emoji:'🧘'},
+  {key:'core',label:'Кор',emoji:'🔥'},
+  {key:'legs',label:'Ноги',emoji:'🦵'},
+  {key:'upper',label:'Верх',emoji:'🏋️'},
+  {key:'hiit',label:'HIIT',emoji:'⚡'},
+  {key:'recovery',label:'Восст.',emoji:'💆'}
+];
 
-window.addEventListener('appinstalled', () => {
-  deferredPrompt = null;
-  document.getElementById('installBtn').style.display = 'none';
-  document.getElementById('installBanner').classList.remove('visible');
-  document.getElementById('appBadge').style.display = 'inline-flex';
-  showToast('Приложение установлено! 🎉');
-  localStorage.setItem('appInstalled', '1');
-});
-
-function installApp() {
-  if (!deferredPrompt) {
-    showInstallHelp();
-    return;
-  }
-  deferredPrompt.prompt();
-  deferredPrompt.userChoice.then(result => {
-    if (result.outcome === 'accepted') {
-      showToast('Устанавливается...');
-    }
-    deferredPrompt = null;
-    document.getElementById('installBtn').style.display = 'none';
-    document.getElementById('installBanner').classList.remove('visible');
-  });
-}
-
-function dismissInstall() {
-  installDismissed = true;
-  localStorage.setItem('installDismissed', '1');
-  document.getElementById('installBanner').classList.remove('visible');
-}
-
-function showInstallHelp() {
-  const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
-  const isAndroid = /Android/.test(navigator.userAgent);
-  let html = '';
-  if (isIOS) {
-    html = `
-      <p style="margin-bottom:14px;"><strong style="color:var(--accent);">На iPhone/iPad (Safari):</strong></p>
-      <ol style="padding-left:20px;margin-bottom:20px;">
-        <li style="margin-bottom:8px;">Откройте страницу в <strong>Safari</strong></li>
-        <li style="margin-bottom:8px;">Нажмите кнопку <strong>"Поделиться"</strong> (квадрат со стрелкой)</li>
-        <li style="margin-bottom:8px;">Прокрутите вниз и выберите <strong>"На экран «Домой»"</strong></li>
-        <li style="margin-bottom:8px;">Нажмите <strong>"Добавить"</strong></li>
-      </ol>
-    `;
-  } else if (isAndroid) {
-    html = `
-      <p style="margin-bottom:14px;"><strong style="color:var(--accent);">На Android (Chrome):</strong></p>
-      <ol style="padding-left:20px;margin-bottom:20px;">
-        <li style="margin-bottom:8px;">Откройте страницу в <strong>Chrome</strong></li>
-        <li style="margin-bottom:8px;">Нажмите на <strong>три точки</strong> в правом верхнем углу</li>
-        <li style="margin-bottom:8px;">Выберите <strong>"Установить приложение"</strong> или <strong>"Добавить на главный экран"</strong></li>
-        <li style="margin-bottom:8px;">Подтвердите установку</li>
-      </ol>
-      <p style="color:var(--muted);font-size:13px;">💡 Или нажмите жёлтую кнопку "Установить на телефон" если она видна выше</p>
-    `;
-  } else {
-    html = `
-      <p style="margin-bottom:14px;">Откройте эту страницу на телефоне и используйте меню браузера для установки на главный экран.</p>
-      <p style="color:var(--muted);font-size:13px;">На Android используйте Chrome, на iOS — Safari.</p>
-    `;
-  }
-  html += `<div style="background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px;margin-top:14px;">
-    <div style="font-size:13px;color:var(--text2);">✨ После установки приложение будет работать <strong style="color:var(--accent);">оффлайн</strong>, откроется на полный экран и появится как обычная иконка на рабочем столе.</div>
-  </div>`;
-  document.getElementById('helpContent').innerHTML = html;
-  document.getElementById('helpModal').classList.add('active');
-}
-function closeHelp() { document.getElementById('helpModal').classList.remove('active'); }
-
-// ===== TOAST =====
-let toastTimer = null;
-function showToast(msg, duration = 2500) {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.classList.add('show');
-  if (toastTimer) clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => t.classList.remove('show'), duration);
-}
-
-// ===== PREVENT PULL-TO-REFRESH =====
-let touchStartY = 0;
-document.addEventListener('touchstart', e => { touchStartY = e.touches[0].clientY; }, { passive: true });
-document.addEventListener('touchmove', e => {
-  const y = e.touches[0].clientY;
-  if (window.scrollY === 0 && y > touchStartY + 5) {
-    // near top pulling down
-  }
-}, { passive: true });
-
-// ===== SPLASH SCREEN =====
-window.addEventListener('load', () => {
-  setTimeout(() => {
-    const splash = document.getElementById('splash');
-    splash.classList.add('hide');
-    setTimeout(() => splash.remove(), 500);
-  }, 400);
-  if (localStorage.getItem('appInstalled') === '1') {
-    document.getElementById('appBadge').style.display = 'inline-flex';
-  }
-});
-
-// ===== ДАННЫЕ =====
-const defaultPrograms = [
-  { id: 1, name: "Программа 1", sets: [
-    { items: [ {type:'exercise',name:'Отжимания от пола',reps:24},{type:'exercise',name:'Подтягивания прямым хватом',reps:9},{type:'exercise',name:'Приседания',reps:30},{type:'exercise',name:'Подтягивания обратным хватом',reps:9},{type:'rest',duration:60} ] },
-    { items: [ {type:'exercise',name:'Отжимания от пола',reps:22},{type:'exercise',name:'Подтягивания прямым хватом',reps:8},{type:'exercise',name:'Приседания',reps:27},{type:'exercise',name:'Подтягивания обратным хватом',reps:8},{type:'rest',duration:60} ] },
-    { items: [ {type:'exercise',name:'Отжимания от пола',reps:19},{type:'exercise',name:'Подтягивания прямым хватом',reps:7},{type:'exercise',name:'Приседания',reps:24},{type:'exercise',name:'Подтягивания обратным хватом',reps:7},{type:'rest',duration:60} ] },
-    { items: [ {type:'exercise',name:'Отжимания от пола',reps:16},{type:'exercise',name:'Подтягивания прямым хватом',reps:6},{type:'exercise',name:'Приседания',reps:21},{type:'exercise',name:'Подтягивания обратным хватом',reps:6},{type:'rest',duration:60} ] },
-    { items: [ {type:'exercise',name:'Отжимания от пола',reps:13},{type:'exercise',name:'Подтягивания прямым хватом',reps:5},{type:'exercise',name:'Приседания',reps:18},{type:'exercise',name:'Подтягивания обратным хватом',reps:5},{type:'rest',duration:60} ] },
-    { items: [ {type:'exercise',name:'Отжимания от пола',reps:11},{type:'exercise',name:'Подтягивания прямым хватом',reps:4},{type:'exercise',name:'Приседания',reps:15},{type:'exercise',name:'Подтягивания обратным хватом',reps:4},{type:'rest',duration:60} ] },
-    { items: [ {type:'exercise',name:'Отжимания от пола',reps:8},{type:'exercise',name:'Подтягивания прямым хватом',reps:3},{type:'exercise',name:'Приседания',reps:12},{type:'exercise',name:'Подтягивания обратным хватом',reps:3} ] }
+const defaultPrograms=[
+  {id:1,name:"Программа 1",sets:[
+    {items:[{type:'exercise',name:'Отжимания от пола',reps:24},{type:'exercise',name:'Подтягивания прямым хватом',reps:9},{type:'exercise',name:'Приседания',reps:30},{type:'exercise',name:'Подтягивания обратным хватом',reps:9},{type:'rest',duration:60}]},
+    {items:[{type:'exercise',name:'Отжимания от пола',reps:22},{type:'exercise',name:'Подтягивания прямым хватом',reps:8},{type:'exercise',name:'Приседания',reps:27},{type:'exercise',name:'Подтягивания обратным хватом',reps:8},{type:'rest',duration:60}]},
+    {items:[{type:'exercise',name:'Отжимания от пола',reps:19},{type:'exercise',name:'Подтягивания прямым хватом',reps:7},{type:'exercise',name:'Приседания',reps:24},{type:'exercise',name:'Подтягивания обратным хватом',reps:7},{type:'rest',duration:60}]},
+    {items:[{type:'exercise',name:'Отжимания от пола',reps:16},{type:'exercise',name:'Подтягивания прямым хватом',reps:6},{type:'exercise',name:'Приседания',reps:21},{type:'exercise',name:'Подтягивания обратным хватом',reps:6},{type:'rest',duration:60}]},
+    {items:[{type:'exercise',name:'Отжимания от пола',reps:13},{type:'exercise',name:'Подтягивания прямым хватом',reps:5},{type:'exercise',name:'Приседания',reps:18},{type:'exercise',name:'Подтягивания обратным хватом',reps:5},{type:'rest',duration:60}]},
+    {items:[{type:'exercise',name:'Отжимания от пола',reps:11},{type:'exercise',name:'Подтягивания прямым хватом',reps:4},{type:'exercise',name:'Приседания',reps:15},{type:'exercise',name:'Подтягивания обратным хватом',reps:4},{type:'rest',duration:60}]},
+    {items:[{type:'exercise',name:'Отжимания от пола',reps:8},{type:'exercise',name:'Подтягивания прямым хватом',reps:3},{type:'exercise',name:'Приседания',reps:12},{type:'exercise',name:'Подтягивания обратным хватом',reps:3}]}
   ]},
-  { id: 2, name: "Программа 2", sets: [
-    { items: [ {type:'exercise',name:'Отжимания от пола',reps:16},{type:'exercise',name:'Подтягивания прямым хватом',reps:6},{type:'exercise',name:'Приседания',reps:22},{type:'exercise',name:'Подтягивания обратным хватом',reps:6},{type:'rest',duration:60} ] },
-    { items: [ {type:'exercise',name:'Отжимания от пола',reps:13},{type:'exercise',name:'Подтягивания прямым хватом',reps:5},{type:'exercise',name:'Приседания',reps:18},{type:'exercise',name:'Подтягивания обратным хватом',reps:5},{type:'rest',duration:60} ] },
-    { items: [ {type:'exercise',name:'Отжимания от пола',reps:11},{type:'exercise',name:'Подтягивания прямым хватом',reps:4},{type:'exercise',name:'Приседания',reps:15},{type:'exercise',name:'Подтягивания обратным хватом',reps:4},{type:'rest',duration:60} ] },
-    { items: [ {type:'exercise',name:'Отжимания от пола',reps:8},{type:'exercise',name:'Подтягивания прямым хватом',reps:3},{type:'exercise',name:'Приседания',reps:12},{type:'exercise',name:'Подтягивания обратным хватом',reps:3},{type:'rest',duration:60} ] },
-    { items: [ {type:'exercise',name:'Отжимания от пола',reps:7},{type:'exercise',name:'Подтягивания прямым хватом',reps:3},{type:'exercise',name:'Приседания',reps:10},{type:'exercise',name:'Подтягивания обратным хватом',reps:3} ] }
+  {id:2,name:"Программа 2",sets:[
+    {items:[{type:'exercise',name:'Отжимания от пола',reps:16},{type:'exercise',name:'Подтягивания прямым хватом',reps:6},{type:'exercise',name:'Приседания',reps:22},{type:'exercise',name:'Подтягивания обратным хватом',reps:6},{type:'rest',duration:60}]},
+    {items:[{type:'exercise',name:'Отжимания от пола',reps:13},{type:'exercise',name:'Подтягивания прямым хватом',reps:5},{type:'exercise',name:'Приседания',reps:18},{type:'exercise',name:'Подтягивания обратным хватом',reps:5},{type:'rest',duration:60}]},
+    {items:[{type:'exercise',name:'Отжимания от пола',reps:11},{type:'exercise',name:'Подтягивания прямым хватом',reps:4},{type:'exercise',name:'Приседания',reps:15},{type:'exercise',name:'Подтягивания обратным хватом',reps:4},{type:'rest',duration:60}]},
+    {items:[{type:'exercise',name:'Отжимания от пола',reps:8},{type:'exercise',name:'Подтягивания прямым хватом',reps:3},{type:'exercise',name:'Приседания',reps:12},{type:'exercise',name:'Подтягивания обратным хватом',reps:3},{type:'rest',duration:60}]},
+    {items:[{type:'exercise',name:'Отжимания от пола',reps:7},{type:'exercise',name:'Подтягивания прямым хватом',reps:3},{type:'exercise',name:'Приседания',reps:10},{type:'exercise',name:'Подтягивания обратным хватом',reps:3}]}
   ]}
 ];
 
-function migrateProgram(p) {
-  if (p.sets) return p;
-  const numSets = p.exercises[0]?.reps.length || 0;
-  const sets = [];
-  for (let s = 0; s < numSets; s++) {
-    const items = p.exercises.map(ex => ({ type:'exercise', name: ex.name, reps: ex.reps[s] || 0 }));
-    if (s < numSets - 1) items.push({ type:'rest', duration: 60 });
-    sets.push({ items });
-  }
-  return { name: p.name, sets };
+function migrateProgram(p){if(p.sets)return p;const n=p.exercises[0]?.reps.length||0;const sets=[];for(let s=0;s<n;s++){const items=p.exercises.map(ex=>({type:'exercise',name:ex.name,reps:ex.reps[s]||0}));if(s<n-1)items.push({type:'rest',duration:60});sets.push({items});}return{name:p.name,sets};}
+function migratePrograms(d){if(Array.isArray(d))return d.map(p=>({id:p.id,...migrateProgram(p)}));return Object.entries(d).map(([k,p])=>({id:parseInt(k),...migrateProgram(p)}));}
+
+let programs=migratePrograms(JSON.parse(localStorage.getItem('workoutPrograms')||JSON.stringify(defaultPrograms)));
+let currentProgramId=programs[0].id;
+let history=JSON.parse(localStorage.getItem('workoutHistory')||'[]');
+let settings=JSON.parse(localStorage.getItem('workoutSettings')||'{"soundEnabled":true,"soundType":"beep","soundVolume":70,"wsGoalPeriod":"week","wsGoalTarget":3}');
+let customWorkout=JSON.parse(localStorage.getItem('customWorkout')||'{"sets":[]}');
+
+function nextId(){return Math.max(0,...library.map(l=>l.id))+1;}
+function ensureLibrary(name,type){if(!library.find(l=>l.name===name)){library.push({id:nextId(),name,category:'none',type,goalPeriod:'day',goalTarget:type==='time'?300:100,noGoal:false});}}
+function buildLibrary(){
+  const lib=[];
+  const add=(name,type)=>{if(!lib.find(x=>x.name===name))lib.push({id:lib.length+1,name,category:'none',type,goalPeriod:'day',goalTarget:type==='time'?300:100,noGoal:false});};
+  programs.forEach(p=>p.sets.forEach(s=>s.items.forEach(i=>{if(i.type==='exercise')add(i.name,'reps');if(i.type==='time')add(i.name,'time');})));
+  history.forEach(h=>{(h.exercises||[]).forEach(e=>add(e.name,'reps'));(h.timeExercises||[]).forEach(t=>add(t.name,'time'));});
+  return lib;
 }
-function migratePrograms(data) {
-  if (Array.isArray(data)) return data.map(p => ({ id: p.id, ...migrateProgram(p) }));
-  return Object.entries(data).map(([k, p]) => ({ id: parseInt(k), ...migrateProgram(p) }));
+let library=JSON.parse(localStorage.getItem('workoutLibrary')||'null')||buildLibrary();
+
+function syncLibrary(){
+  const before=library.length;
+  programs.forEach(p=>p.sets.forEach(s=>s.items.forEach(i=>{if(i.type==='exercise')ensureLibrary(i.name,'reps');else if(i.type==='time')ensureLibrary(i.name,'time');})));
+  history.forEach(h=>{(h.exercises||[]).forEach(e=>ensureLibrary(e.name,'reps'));(h.timeExercises||[]).forEach(t=>ensureLibrary(t.name,'time'));});
+  if(library.length!==before)saveLibrary();
 }
+function saveLibrary(){localStorage.setItem('workoutLibrary',JSON.stringify(library));}
+function savePrograms(){localStorage.setItem('workoutPrograms',JSON.stringify(programs));}
+function saveHistory(){localStorage.setItem('workoutHistory',JSON.stringify(history));}
+function saveSettings(){localStorage.setItem('workoutSettings',JSON.stringify(settings));}
+function saveCustom(){localStorage.setItem('customWorkout',JSON.stringify(customWorkout));}
+syncLibrary();
 
-let programs = migratePrograms(JSON.parse(localStorage.getItem('workoutPrograms') || JSON.stringify(defaultPrograms)));
-localStorage.setItem('workoutPrograms', JSON.stringify(programs));
-let currentProgramId = programs[0].id;
-let history = JSON.parse(localStorage.getItem('workoutHistory') || '[]');
+let homeFilter='all';
+let workoutState={index:0,startTime:null,timerInterval:null,restInterval:null,restTime:60,timeInterval:null,timeLeft:0,timeDone:false};
+let sequence=[];
+let workoutSource='custom';
+let editingCardId=null;
+let editingNoteIndex=-1;
+let quickAddExercise=null,quickAddType='reps',quickAddDateMode='today';
 
-let workoutState = { index:0, startTime:null, timerInterval:null, restInterval:null, restTime:60, timeInterval:null, timeLeft:0, timeDone:false };
-let sequence = [];
-let calendarDate = new Date();
-let selectedCalendarDay = null;
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+function escA(s){return esc(s).replace(/'/g,'&#39;');}
+function getProg(){return programs.find(p=>p.id===currentProgramId)||programs[0];}
+function findProgById(id){return programs.find(p=>p.id===id)||programs[0];}
+function parseDate(ds){const p=ds.split(',');const d=p[0].trim().split('.');const h=p[1]?.trim().split(':')||['0','0','0'];return new Date(d[2],d[1]-1,d[0],h[0],h[1],h[2]);}
+function formatDateKey(d){return d.toLocaleDateString('ru-RU');}
+function formatDateISO(d){return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;}
+function formatDuration(s){s=Math.round(s);const h=Math.floor(s/3600),m=Math.floor((s%3600)/60),sec=s%60;if(h>0)return `${h} ч ${m} мин`;if(m>0)return sec>0?`${m} мин ${sec} с`:`${m} мин`;return `${sec} с`;}
+function formatClock(s){return `${Math.floor(s/60)}:${String(s%60).padStart(2,'0')}`;}
+function dayKey(h){return h.date.split(',')[0].trim();}
+function catInfo(key){return CATEGORIES.find(c=>c.key===key)||CATEGORIES[0];}
 
-// ===== УТИЛИТЫ =====
-function esc(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
-function escA(s) { return esc(s).replace(/'/g,'&#39;'); }
-function getProg() { return programs.find(p => p.id === currentProgramId) || programs[0]; }
-function findProgById(id) { return programs.find(p => p.id === id) || programs[0]; }
-function unionNames(a, b) { const arr = [...a]; b.forEach(n => { if (!arr.includes(n)) arr.push(n); }); return arr; }
-
-function showScreen(id) {
-  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
-  if (id === 'dashboardScreen') renderDashboard();
-  if (id === 'programScreen') { renderTabs(); renderMain(); }
-  if (id === 'calendarScreen') renderCalendar();
+  if(id==='homeScreen')renderHome();
+  if(id==='programScreen'){renderTabs();renderMain();}
 }
-function switchProgram(id) { currentProgramId = id; renderTabs(); renderMain(); }
-function parseDate(dateStr) {
-  const parts = dateStr.split(',');
-  const dmy = parts[0].trim().split('.');
-  const hms = parts[1]?.trim().split(':') || ['0','0','0'];
-  return new Date(dmy[2], dmy[1]-1, dmy[0], hms[0], hms[1], hms[2]);
-}
-function formatDateKey(d) { return d.toLocaleDateString('ru-RU'); }
-function formatDuration(sec) {
-  sec = Math.round(sec);
-  const h = Math.floor(sec/3600), m = Math.floor((sec%3600)/60), s = sec%60;
-  if (h > 0) return `${h} ч ${m} мин`;
-  if (m > 0) return s > 0 ? `${m} мин ${s} с` : `${m} мин`;
-  return `${s} с`;
-}
-function formatClock(sec) { return `${Math.floor(sec/60)}:${String(sec%60).padStart(2,'0')}`; }
+function closeModal(id){document.getElementById(id).classList.remove('active');}
 
-function getProgramTotals(prog) {
-  const totals = {}, timeTotals = {};
-  let total = 0, totalTime = 0;
-  prog.sets.forEach(s => s.items.forEach(i => {
-    if (i.type === 'exercise') { totals[i.name] = (totals[i.name]||0) + i.reps; total += i.reps; }
-    if (i.type === 'time') { timeTotals[i.name] = (timeTotals[i.name]||0) + i.duration; totalTime += i.duration; }
-  }));
-  return { totals, total, timeTotals, totalTime };
-}
-function getExerciseNames(prog) {
-  const names = [];
-  prog.sets.forEach(s => s.items.forEach(i => { if (i.type==='exercise' && !names.includes(i.name)) names.push(i.name); }));
-  return names;
-}
-function getTimeNames(prog) {
-  const names = [];
-  prog.sets.forEach(s => s.items.forEach(i => { if (i.type==='time' && !names.includes(i.name)) names.push(i.name); }));
-  return names;
-}
-function getExerciseBreakdown(list) {
-  const m = {};
-  list.forEach(h => {
-    if (h.exercises) h.exercises.forEach(ex => { m[ex.name] = (m[ex.name]||0) + ex.reps; });
-    else {
-      const prog = findProgById(h.program);
-      const { totals, total } = getProgramTotals(prog);
-      Object.entries(totals).forEach(([n,r]) => { m[n] = (m[n]||0) + Math.round((h.totalReps||0) * (r/total)); });
-    }
+let audioCtx=null;
+function playSound(t){if(!settings.soundEnabled||t==='vibro')return;try{audioCtx=audioCtx||new(window.AudioContext||window.webkitAudioContext)();const ctx=audioCtx;const vol=settings.soundVolume/100;const g=ctx.createGain();g.gain.value=vol*0.3;g.connect(ctx.destination);
+if(t==='beep'){const o=ctx.createOscillator();o.type='sine';o.frequency.value=880;o.connect(g);o.start();o.stop(ctx.currentTime+0.2);}
+else if(t==='bell'){const o=ctx.createOscillator();o.type='sine';o.frequency.value=523;g.gain.setValueAtTime(vol*0.4,ctx.currentTime);g.gain.exponentialRampToValueAtTime(0.01,ctx.currentTime+0.5);o.connect(g);o.start();o.stop(ctx.currentTime+0.5);}
+else if(t==='chime'){[523,659,784].forEach((f,i)=>{const o=ctx.createOscillator();const gg=ctx.createGain();o.type='sine';o.frequency.value=f;gg.gain.setValueAtTime(vol*0.3,ctx.currentTime+i*0.15);gg.gain.exponentialRampToValueAtTime(0.01,ctx.currentTime+i*0.15+0.3);o.connect(gg);gg.connect(ctx.destination);o.start(ctx.currentTime+i*0.15);o.stop(ctx.currentTime+i*0.15+0.3);});}}catch(e){}}
+function playAlert(){playSound(settings.soundType);if(navigator.vibrate)navigator.vibrate([100,50,100]);}
+function toggleSound(){settings.soundEnabled=!settings.soundEnabled;saveSettings();document.getElementById('soundToggle').classList.toggle('active',settings.soundEnabled);}
+function changeSoundType(){settings.soundType=document.getElementById('soundType').value;saveSettings();}
+function changeSoundVolume(){settings.soundVolume=parseInt(document.getElementById('soundVolume').value);saveSettings();}
+function testSound(){playAlert();}
+
+function exEntries(name,type){
+  const out=[];
+  history.forEach(h=>{
+    if(type==='time'){const t=(h.timeExercises||[]).find(x=>x.name===name);if(t)out.push({h,val:t.seconds,sets:0});}
+    else{const e=(h.exercises||[]).find(x=>x.name===name);if(e)out.push({h,val:e.reps,sets:e.sets||0});}
   });
-  return m;
+  return out;
 }
-function getTimeBreakdown(list) {
-  const m = {};
-  list.forEach(h => (h.timeExercises||[]).forEach(t => { m[t.name] = (m[t.name]||0) + t.seconds; }));
-  return m;
+function exStats(name,type){
+  const entries=exEntries(name,type);
+  const total=entries.reduce((s,e)=>s+e.val,0);
+  const perDay={};
+  entries.forEach(e=>{const k=dayKey(e.h);perDay[k]=(perDay[k]||0)+e.val;});
+  const record=Math.max(0,...Object.values(perDay));
+  const today=formatDateKey(new Date());
+  const todaySets=entries.filter(e=>dayKey(e.h)===today).reduce((s,e)=>s+e.sets,0);
+  return {total,workouts:entries.length,record,todaySets,perDay};
 }
-function getDayData(dateStr) {
-  const entries = history.filter(h => h.date.split(',')[0].trim() === dateStr);
-  const exMap = {}, timeMap = {};
-  entries.forEach(h => {
-    (h.exercises||[]).forEach(ex => { exMap[ex.name] = (exMap[ex.name]||0) + ex.reps; });
-    (h.timeExercises||[]).forEach(t => { timeMap[t.name] = (timeMap[t.name]||0) + t.seconds; });
-  });
-  return { entries, exercises: exMap, timeExercises: timeMap, totalReps: entries.reduce((s,h)=>s+(h.totalReps||0),0) };
+function goalProgress(ex){
+  const period=ex.goalPeriod||'day',target=ex.goalTarget||(ex.type==='time'?300:100);
+  const now=new Date();let from;
+  if(period==='day'){from=new Date(now);from.setHours(0,0,0,0);}
+  else if(period==='week')from=new Date(now-7*864e5);
+  else from=new Date(now-30*864e5);
+  let cur=0;exEntries(ex.name,ex.type).forEach(e=>{if(parseDate(e.h.date)>=from)cur+=e.val;});
+  return {cur,target,period};
 }
-
-function rebuildDay(ds, exercises, timeExercises) {
-  const old = history.filter(h => h.date.split(',')[0].trim() === ds);
-  const totalSeconds = old.reduce((s,h)=>s+(h.totalSeconds||0),0);
-  const dateStr = old.length ? old[0].date : `${ds}, 00:00:00`;
-  history = history.filter(h => h.date.split(',')[0].trim() !== ds);
-  const total = exercises.reduce((s,e)=>s+e.reps,0);
-  if (exercises.length || timeExercises.length) {
-    history.push({
-      program: currentProgramId, date: dateStr,
-      time: totalSeconds ? `${Math.floor(totalSeconds/60)}м ${totalSeconds%60}с` : '0м 0с',
-      totalSeconds, totalReps: total, exercises, timeExercises, manual: true
-    });
-  }
-  localStorage.setItem('workoutHistory', JSON.stringify(history));
-  renderCalendar(); renderDashboard();
+function getStreak(){
+  const today=new Date();today.setHours(0,0,0,0);
+  let st=0;
+  for(let i=0;i<365;i++){const d=new Date(today);d.setDate(d.getDate()-i);const ds=formatDateKey(d);if(history.some(h=>dayKey(h)===ds))st++;else if(i>0)break;}
+  return st;
 }
-function toRepList(map) { return Object.entries(map).filter(([_,r])=>r>0).map(([name,reps])=>({name, reps})); }
-function toTimeList(map) { return Object.entries(map).filter(([_,s])=>s>0).map(([name,seconds])=>({name, seconds})); }
-
-function updateDayRep(ds, name, value) {
-  const day = getDayData(ds);
-  const exMap = { ...day.exercises };
-  exMap[name] = parseInt(value) || 0;
-  rebuildDay(ds, toRepList(exMap), toTimeList(day.timeExercises));
-}
-function removeDayRep(ds, name) {
-  const day = getDayData(ds);
-  const exMap = { ...day.exercises }; delete exMap[name];
-  rebuildDay(ds, toRepList(exMap), toTimeList(day.timeExercises));
-}
-function renameDayRep(ds, oldName, newName) {
-  newName = newName.trim();
-  if (!newName || newName === oldName) { renderCalendar(); return; }
-  const day = getDayData(ds);
-  const exMap = { ...day.exercises };
-  const v = exMap[oldName] || 0; delete exMap[oldName];
-  exMap[newName] = (exMap[newName] || 0) + v;
-  rebuildDay(ds, toRepList(exMap), toTimeList(day.timeExercises));
-}
-function addDayRep(ds) {
-  const name = document.getElementById('newRepName').value.trim();
-  const v = parseInt(document.getElementById('newRepVal').value) || 0;
-  if (!name) { showToast('Введите название'); return; }
-  const day = getDayData(ds);
-  const exMap = { ...day.exercises };
-  exMap[name] = (exMap[name] || 0) + v;
-  rebuildDay(ds, toRepList(exMap), toTimeList(day.timeExercises));
-}
-function updateDayTime(ds, name, value) {
-  const day = getDayData(ds);
-  const tMap = { ...day.timeExercises };
-  tMap[name] = parseInt(value) || 0;
-  rebuildDay(ds, toRepList(day.exercises), toTimeList(tMap));
-}
-function removeDayTime(ds, name) {
-  const day = getDayData(ds);
-  const tMap = { ...day.timeExercises }; delete tMap[name];
-  rebuildDay(ds, toRepList(day.exercises), toTimeList(tMap));
-}
-function renameDayTime(ds, oldName, newName) {
-  newName = newName.trim();
-  if (!newName || newName === oldName) { renderCalendar(); return; }
-  const day = getDayData(ds);
-  const tMap = { ...day.timeExercises };
-  const v = tMap[oldName] || 0; delete tMap[oldName];
-  tMap[newName] = (tMap[newName] || 0) + v;
-  rebuildDay(ds, toRepList(day.exercises), toTimeList(tMap));
-}
-function addDayTime(ds) {
-  const name = document.getElementById('newTimeName').value.trim();
-  const v = parseInt(document.getElementById('newTimeVal').value) || 0;
-  if (!name) { showToast('Введите название'); return; }
-  const day = getDayData(ds);
-  const tMap = { ...day.timeExercises };
-  tMap[name] = (tMap[name] || 0) + v;
-  rebuildDay(ds, toRepList(day.exercises), toTimeList(tMap));
-}
-function clearDay(ds) {
-  if (confirm(`Очистить все данные за ${ds}?`)) {
-    history = history.filter(h => h.date.split(',')[0].trim() !== ds);
-    localStorage.setItem('workoutHistory', JSON.stringify(history));
-    renderCalendar(); renderDashboard();
-    showToast('Данные очищены');
-  }
+function workoutsInPeriod(period){
+  const now=new Date();let from;
+  if(period==='day'){from=new Date(now);from.setHours(0,0,0,0);}
+  else if(period==='week')from=new Date(now-7*864e5);
+  else from=new Date(now-30*864e5);
+  return history.filter(h=>parseDate(h.date)>=from).length;
 }
 
-// ===== ДАШБОРД =====
-function renderDashboard() {
-  const totalReps = history.reduce((s,h)=>s+(h.totalReps||0),0);
-  const totalSec = history.reduce((s,h)=>s+(h.totalSeconds||0),0);
-  document.getElementById('totalAllTime').textContent = totalReps.toLocaleString('ru-RU');
-  document.getElementById('totalAllTimeSub').textContent = `${history.length} тренировок`;
-  document.getElementById('totalTimeAll').textContent = formatDuration(totalSec);
+function renderHome(){
+  syncLibrary();
+  document.getElementById('streakNum').textContent=`${getStreak()} 🔥`;
 
-  document.getElementById('dashboardStats').innerHTML = `
-    <div class="mini-stat" onclick="showWeekDetails()"><div class="ms-label">Неделя</div><div class="ms-value">${getThisWeekReps()}</div></div>
-    <div class="mini-stat" onclick="showMonthDetails()"><div class="ms-label">Месяц</div><div class="ms-value">${getThisMonthReps()}</div></div>
-    <div class="mini-stat" onclick="showBestDayDetails()"><div class="ms-label">Рекорд дня</div><div class="ms-value">${getBestDay().reps}</div></div>`;
-
-  const dayMap = {};
-  history.forEach(h => {
-    const d = h.date.split(',')[0].trim();
-    if (!dayMap[d]) dayMap[d] = { reps:0, count:0, time:0 };
-    dayMap[d].reps += h.totalReps||0; dayMap[d].count++; dayMap[d].time += h.totalSeconds||0;
-  });
-  const days = Object.entries(dayMap).sort((a,b)=>b[0].split('.').reverse().join('').localeCompare(a[0].split('.').reverse().join(''))).slice(0,7);
-  const today = formatDateKey(new Date());
-  document.getElementById('dayList').innerHTML = days.length === 0 ? '<div class="no-data">Пока нет тренировок</div>' :
-    days.map(([date, d]) => `
-      <div class="day-item ${date===today?'today':''}">
-        <div class="day-date">${date}${date===today?' <span style="color:var(--accent);font-size:11px;">сегодня</span>':''}<small>${d.count} трен. • ${Math.floor(d.time/60)} мин</small></div>
-        <div class="day-reps">${d.reps}<small>повт.</small></div>
-      </div>`).join('');
-}
-function getBestDay() {
-  const m = {};
-  history.forEach(h => { const d = h.date.split(',')[0].trim(); m[d] = (m[d]||0) + (h.totalReps||0); });
-  let best = { date:'-', reps:0 };
-  Object.entries(m).forEach(([d,r]) => { if (r > best.reps) best = { date:d, reps:r }; });
-  return best;
-}
-function getThisWeekReps() { const w = new Date(Date.now()-7*864e5); return history.filter(h=>parseDate(h.date)>=w).reduce((s,h)=>s+(h.totalReps||0),0); }
-function getThisMonthReps() { const m = new Date(Date.now()-30*864e5); return history.filter(h=>parseDate(h.date)>=m).reduce((s,h)=>s+(h.totalReps||0),0); }
-
-function showAllTimeDetails() { showBreakdown('За всё время', history); }
-function showWeekDetails() { const w = new Date(Date.now()-7*864e5); showBreakdown('За неделю', history.filter(h=>parseDate(h.date)>=w)); }
-function showMonthDetails() { const m = new Date(Date.now()-30*864e5); showBreakdown('За месяц', history.filter(h=>parseDate(h.date)>=m)); }
-function showTimeDetails() {
-  const timeMap = getTimeBreakdown(history);
-  const totalSec = history.reduce((s,h)=>s+(h.totalSeconds||0),0);
-  document.getElementById('statsModalTitle').textContent = 'Время тренировок';
-  let html = `<div class="exercise-detail-row"><div class="name">Суммарное время</div><div class="reps blue">${formatDuration(totalSec)}</div></div>`;
-  const entries = Object.entries(timeMap).sort((a,b)=>b[1]-a[1]);
-  if (entries.length > 0) {
-    html += `<div class="section-sub">Упражнения на время</div>`;
-    html += entries.map(([n,s]) => `<div class="exercise-detail-row"><div class="name">⏱ ${esc(n)}</div><div class="reps blue">${formatDuration(s)}</div></div>`).join('');
-  }
-  document.getElementById('statsModalContent').innerHTML = html;
-  document.getElementById('statsModalTotals').innerHTML = '';
-  document.getElementById('statsModal').classList.add('active');
-}
-function showBestDayDetails() {
-  const m = {};
-  history.forEach(h => { const d = h.date.split(',')[0].trim(); (m[d] = m[d]||[]).push(h); });
-  let bd = null, br = 0;
-  Object.entries(m).forEach(([d,e]) => { const t = e.reduce((s,h)=>s+(h.totalReps||0),0); if (t > br) { br = t; bd = d; } });
-  showBreakdown(bd ? `Рекорд: ${bd}` : 'Рекорд дня', bd ? m[bd] : []);
-}
-function showBreakdown(title, list) {
-  document.getElementById('statsModalTitle').textContent = title;
-  const repsMap = getExerciseBreakdown(list);
-  const timeMap = getTimeBreakdown(list);
-  let html = '';
-  const repsEntries = Object.entries(repsMap).sort((a,b)=>b[1]-a[1]);
-  if (repsEntries.length > 0) html += repsEntries.map(([n,r]) => `<div class="exercise-detail-row"><div class="name">${esc(n)}</div><div class="reps">${r}</div></div>`).join('');
-  const timeEntries = Object.entries(timeMap).sort((a,b)=>b[1]-a[1]);
-  if (timeEntries.length > 0) {
-    html += `<div class="section-sub">Упражнения на время</div>`;
-    html += timeEntries.map(([n,s]) => `<div class="exercise-detail-row"><div class="name">⏱ ${esc(n)}</div><div class="reps blue">${formatDuration(s)}</div></div>`).join('');
-  }
-  if (!html) html = '<div class="no-data">Нет данных</div>';
-  document.getElementById('statsModalContent').innerHTML = html;
-  const repsTotal = repsEntries.reduce((s,[,r])=>s+r,0);
-  const timeTotal = timeEntries.reduce((s,[,t])=>s+t,0);
-  document.getElementById('statsModalTotals').innerHTML = `
-    <div class="total-row"><span>Повторений</span><span class="value">${repsTotal}</span></div>
-    ${timeTotal > 0 ? `<div class="total-row"><span>Время на упр.</span><span class="value blue">${formatDuration(timeTotal)}</span></div>` : ''}`;
-  document.getElementById('statsModal').classList.add('active');
-}
-function closeStatsModal() { document.getElementById('statsModal').classList.remove('active'); }
-
-// ===== КАЛЕНДАРЬ =====
-function showCalendar() { calendarDate = new Date(); selectedCalendarDay = null; showScreen('calendarScreen'); }
-function changeMonth(d) { calendarDate.setMonth(calendarDate.getMonth()+d); renderCalendar(); }
-function renderCalendar() {
-  const y = calendarDate.getFullYear(), m = calendarDate.getMonth();
-  const names = ['Январь','Февраль','Март','Апрель','Май','Июнь','Июль','Август','Сентябрь','Октябрь','Ноябрь','Декабрь'];
-  document.getElementById('monthLabel').textContent = `${names[m]} ${y}`;
-  const first = new Date(y, m, 1), last = new Date(y, m+1, 0);
-  const start = first.getDay() || 7;
-  const dayData = {};
-  history.forEach(h => {
-    const d = parseDate(h.date), ds = h.date.split(',')[0].trim();
-    if (d.getFullYear()===y && d.getMonth()===m) { dayData[ds] = dayData[ds] || { reps:0 }; dayData[ds].reps += h.totalReps||0; }
-  });
-  const today = formatDateKey(new Date());
-  let html = ['Пн','Вт','Ср','Чт','Пт','Сб','Вс'].map(d=>`<div class="day-header">${d}</div>`).join('');
-  for (let i=1;i<start;i++) html += '<div class="day-cell empty"></div>';
-  for (let day=1; day<=last.getDate(); day++) {
-    const ds = formatDateKey(new Date(y, m, day));
-    const d = dayData[ds];
-    html += `<div class="day-cell ${d?'has-data':''} ${ds===today?'today':''} ${selectedCalendarDay===ds?'selected':''}" onclick="selectCalendarDay('${ds}')">
-      <div class="day-num">${day}</div>${d?`<div class="day-reps">${d.reps}</div>`:''}</div>`;
-  }
-  document.getElementById('calendarGrid').innerHTML = html;
-  renderDayDetails(selectedCalendarDay);
-}
-function selectCalendarDay(ds) { selectedCalendarDay = selectedCalendarDay===ds ? null : ds; renderCalendar(); }
-
-function renderDayDetails(ds) {
-  const el = document.getElementById('dayDetails');
-  if (!ds) { el.innerHTML = '<div class="no-data">Выберите день в календаре</div>'; return; }
-  const data = getDayData(ds);
-  const prog = getProg();
-  const repNames = unionNames(Object.keys(data.exercises), getExerciseNames(prog));
-  const timeNames = unionNames(Object.keys(data.timeExercises), getTimeNames(prog));
-
-  let html = `
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
-      <div style="color:var(--text2);font-size:13px;">${ds} • ${data.totalReps} повт.</div>
-      ${data.entries.length ? `<button class="icon-btn del" style="width:auto;padding:0 10px;height:30px;font-size:11px;" onclick="clearDay('${ds}')">Очистить</button>` : ''}
+  const gp=settings.wsGoalPeriod,gt=settings.wsGoalTarget,done=workoutsInPeriod(gp);
+  const pct=Math.min(100,Math.round(done/gt*100));
+  const periodLabel=gp==='day'?'на день':gp==='week'?'на неделю':'на месяц';
+  document.getElementById('weekGoalCard').innerHTML=`
+    <div class="gc-top">
+      <div class="gc-label">🎯 Цель ${periodLabel}</div>
+      <div class="gc-value">${done} / ${gt} тренировок</div>
     </div>
-    <div class="section-sub">Повторения</div>`;
+    <div class="gc-bar"><div class="gc-fill" style="width:${pct}%"></div></div>`;
 
-  repNames.forEach(n => {
-    const v = data.exercises[n] || 0;
-    html += `<div class="edit-form-row">
-      <input type="text" class="name-input" value="${escA(n)}" onchange="renameDayRep('${ds}', '${escA(n)}', this.value)">
-      <input type="number" value="${v}" min="0" onchange="updateDayRep('${ds}', '${escA(n)}', this.value)">
-      ${v > 0 ? `<button class="icon-btn del" onclick="removeDayRep('${ds}', '${escA(n)}')">✕</button>` : ''}
+  const usedCats=['all',...new Set(library.map(l=>l.category))];
+  document.getElementById('categoryChips').innerHTML=usedCats.map(c=>{
+    const info=catInfo(c);
+    const label=c==='all'?'Все':(info.emoji?`${info.emoji} ${info.label}`:info.label);
+    return `<div class="chip ${homeFilter===c?'active':''}" onclick="setHomeFilter('${c}')">${label}</div>`;
+  }).join('');
+
+  const list=library.filter(l=>homeFilter==='all'||l.category===homeFilter);
+  document.getElementById('exerciseCards').innerHTML=list.length?list.map(ex=>renderCard(ex)).join(''):'<div style="color:var(--muted);text-align:center;padding:40px;font-weight:500;">Нет упражнений в этой категории</div>';
+  list.forEach(ex=>{if(document.getElementById(`expand-${ex.id}`)?.classList.contains('open'))renderCardStats(ex.id);});
+}
+function setHomeFilter(f){homeFilter=f;renderHome();}
+
+function renderCard(ex){
+  const st=exStats(ex.name,ex.type);
+  const cat=catInfo(ex.category);
+  const totFmt=ex.type==='time'?formatDuration(st.total):st.total;
+  const recFmt=ex.type==='time'?formatDuration(st.record):st.record;
+
+  let goalHtml='';
+  if(!ex.noGoal){
+    const gp=goalProgress(ex);
+    const pct=Math.min(100,Math.round(gp.cur/gp.target*100));
+    const valFmt=ex.type==='time'?formatDuration(gp.cur):gp.cur;
+    goalHtml=`
+    <div class="goal-block">
+      <div class="goal-label">🎯 ${gp.period==='day'?'Ежедневно':gp.period==='week'?'В неделю':'В месяц'}</div>
+      <div class="goal-value">${valFmt} <span>/ ${ex.type==='time'?formatDuration(gp.target):gp.target}</span></div>
+      <div class="goal-bar"><div class="goal-fill" style="width:${pct}%"></div></div>
     </div>`;
-  });
-  html += `<div class="edit-form-row">
-    <input type="text" class="name-input" id="newRepName" placeholder="Новое упражнение">
-    <input type="number" id="newRepVal" value="10" min="0">
-    <button class="icon-btn ok" onclick="addDayRep('${ds}')">+</button>
-  </div>`;
+  }
 
-  html += `<div class="section-sub">⏱ На время · секунды</div>`;
-  timeNames.forEach(n => {
-    const v = data.timeExercises[n] || 0;
-    html += `<div class="edit-form-row">
-      <input type="text" class="name-input" value="${escA(n)}" onchange="renameDayTime('${ds}', '${escA(n)}', this.value)">
-      <input type="number" value="${v}" min="0" onchange="updateDayTime('${ds}', '${escA(n)}', this.value)">
-      ${v > 0 ? `<button class="icon-btn del" onclick="removeDayTime('${ds}', '${escA(n)}')">✕</button>` : ''}
+  return `
+  <div class="ex-card">
+    <div class="ex-head">
+      <div class="ex-title">${esc(ex.name)}</div>
+      ${cat.key!=='none'?`<span class="cat-badge">${cat.emoji} ${cat.label}</span>`:''}
+      <button class="card-btn" onclick="openQuickAdd('${escA(ex.name)}','${ex.type}')">+</button>
+      <button class="card-btn" onclick="toggleCardStats(${ex.id})">📊</button>
+      <button class="card-btn" onclick="openCardSettings(${ex.id})">⚙️</button>
+    </div>
+    ${goalHtml}
+    <div class="ex-stats">
+      <div class="st"><div class="st-v">${totFmt}</div><div class="st-l">Всего</div></div>
+      <div class="st"><div class="st-v">${st.workouts}</div><div class="st-l">Тренировок</div></div>
+      <div class="st"><div class="st-v">${recFmt}</div><div class="st-l">Рекорд</div></div>
+      <div class="st"><div class="st-v">${st.todaySets}</div><div class="st-l">Подходов сегодня</div></div>
+    </div>
+    <div class="ex-stats-row2"><span>🏁 ${ex.noGoal?'Без цели':(ex.type==='time'?formatDuration(ex.goalTarget||300):(ex.goalTarget||100))}</span><span>Всего: <b>${totFmt}</b></span></div>
+    <div class="stats-expand" id="expand-${ex.id}">
+      <div class="period-chips" id="pchips-${ex.id}"></div>
+      <canvas class="chart-canvas" id="chart-${ex.id}"></canvas>
+      <div class="chart-totals" id="totals-${ex.id}"></div>
+      <div class="mini-heat-label">Активность за 6 месяцев</div>
+      <div class="mini-heat" id="heat-${ex.id}"></div>
+    </div>
+  </div>`;
+}
+
+let cardPeriods={};
+function toggleCardStats(id){
+  const el=document.getElementById(`expand-${id}`);
+  el.classList.toggle('open');
+  if(el.classList.contains('open')){cardPeriods[id]=cardPeriods[id]||7;renderCardStats(id);}
+}
+function setCardPeriod(id,p){cardPeriods[id]=p;renderCardStats(id);}
+
+function renderCardStats(id){
+  const ex=library.find(l=>l.id===id);if(!ex)return;
+  const period=cardPeriods[id]||7;
+  document.getElementById(`pchips-${id}`).innerHTML=[7,30,90,180,365].map(p=>`<div class="p-chip ${period===p?'active':''}" onclick="setCardPeriod(${id},${p})">${p} д</div>`).join('');
+  const series=groupSeries(ex.name,ex.type,period);
+  drawBars(document.getElementById(`chart-${id}`),series);
+  const now=new Date();let from=new Date(now-(period-1)*864e5);from.setHours(0,0,0,0);
+  let periodTotal=0;exEntries(ex.name,ex.type).forEach(e=>{if(parseDate(e.h.date)>=from)periodTotal+=e.val;});
+  const st=exStats(ex.name,ex.type);
+  const fmt=ex.type==='time'?formatDuration:(v=>v);
+  document.getElementById(`totals-${id}`).innerHTML=`За период: <b>${fmt(periodTotal)}</b> · Всего: <b>${fmt(st.total)}</b>`;
+  const perDay=st.perDay;
+  const today=new Date();today.setHours(0,0,0,0);
+  const start=new Date(today);start.setDate(start.getDate()-((26*7)-1));
+  const max=Math.max(1,...Object.values(perDay));
+  let cells='';
+  for(let w=0;w<26;w++){for(let d=0;d<7;d++){
+    const dt=new Date(start);dt.setDate(dt.getDate()+w*7+d);
+    const v=perDay[formatDateKey(dt)]||0;
+    let col='var(--card2)';
+    if(v>0){const i=v/max;col=i<0.25?'#2a2514':i<0.5?'#3a3524':i<0.75?'#6b5f24':'#fbbf24';}
+    cells+=`<div style="background:${col}"></div>`;
+  }}
+  document.getElementById(`heat-${id}`).innerHTML=cells;
+}
+
+function groupSeries(name,type,period){
+  const now=new Date();now.setHours(0,0,0,0);
+  const perDay={};exEntries(name,type).forEach(e=>{const k=dayKey(e.h);perDay[k]=(perDay[k]||0)+e.val;});
+  const out=[];
+  if(period===7){
+    for(let i=6;i>=0;i--){const d=new Date(now);d.setDate(d.getDate()-i);out.push({label:['ВС','ПН','ВТ','СР','ЧТ','ПТ','СБ'][d.getDay()],value:perDay[formatDateKey(d)]||0});}
+  } else if(period===30){
+    for(let w=3;w>=0;w--){let s=0;for(let i=0;i<7;i++){const d=new Date(now);d.setDate(d.getDate()-(w*7+i));s+=perDay[formatDateKey(d)]||0;}out.push({label:`Н-${w}`,value:s});}
+  } else {
+    const months=period===90?3:period===180?6:12;
+    for(let m=months-1;m>=0;m--){const d=new Date(now.getFullYear(),now.getMonth()-m,1);let s=0;Object.entries(perDay).forEach(([k,v])=>{const pd=parseDate(k);if(pd.getFullYear()===d.getFullYear()&&pd.getMonth()===d.getMonth())s+=v;});out.push({label:d.toLocaleDateString('ru-RU',{month:'short'}),value:s});}
+  }
+  return out;
+}
+function drawBars(canvas,series){
+  const ctx=canvas.getContext('2d');
+  const rect=canvas.getBoundingClientRect();
+  canvas.width=rect.width*2;canvas.height=rect.height*2;ctx.scale(2,2);
+  const w=rect.width,h=rect.height;
+  ctx.clearRect(0,0,w,h);
+  const max=Math.max(1,...series.map(s=>s.value));
+  const bw=w/series.length;
+  series.forEach((s,i)=>{
+    const bh=(s.value/max)*(h-30);
+    const x=i*bw+bw*0.2,y=h-20-bh;
+    if(s.value>0){
+      const grad=ctx.createLinearGradient(0,y,0,y+bh);
+      grad.addColorStop(0,'#fbbf24');grad.addColorStop(1,'#f59e0b');
+      ctx.fillStyle=grad;
+      ctx.fillRect(x,y,bw*0.6,Math.max(2,bh));
+    } else {ctx.fillStyle='#2a2a2e';ctx.fillRect(x,h-22,bw*0.6,2);}
+    ctx.fillStyle=s.value>0?'#a1a1aa':'#71717a';
+    ctx.font='500 10px -apple-system';ctx.textAlign='center';
+    ctx.fillText(s.label,i*bw+bw/2,h-8);
+    if(s.value>0){ctx.fillStyle='#e4e4e7';ctx.font='600 11px -apple-system';ctx.fillText(s.value,i*bw+bw/2,y-6);}
+  });
+}
+
+function openCardSettings(id){
+  editingCardId=id;
+  const ex=library.find(l=>l.id===id);
+  document.getElementById('csCategory').innerHTML=CATEGORIES.map(c=>`<option value="${c.key}" ${ex.category===c.key?'selected':''}>${c.emoji?c.emoji+' ':''}${c.label}</option>`).join('');
+  document.getElementById('csGoalPeriod').value=ex.goalPeriod||'day';
+  document.getElementById('csGoalTarget').value=ex.goalTarget||(ex.type==='time'?300:100);
+
+  const btn=document.getElementById('csGoalToggle');
+  if(ex.noGoal){
+    btn.textContent='➕ Добавить цель';
+    btn.onclick=()=>{ex.noGoal=false;if(!ex.goalTarget)ex.goalTarget=ex.type==='time'?300:100;saveLibrary();closeModal('cardSettingsModal');renderHome();showToast('Цель добавлена');};
+  } else {
+    btn.textContent='🗑 Удалить цель';
+    btn.onclick=()=>{ex.noGoal=true;saveLibrary();closeModal('cardSettingsModal');renderHome();showToast('Цель удалена');};
+  }
+
+  document.getElementById('cardSettingsModal').classList.add('active');
+}
+function saveCardSettings(){
+  const ex=library.find(l=>l.id===editingCardId);
+  ex.category=document.getElementById('csCategory').value;
+  ex.goalPeriod=document.getElementById('csGoalPeriod').value;
+  ex.goalTarget=parseInt(document.getElementById('csGoalTarget').value)||1;
+  saveLibrary();closeModal('cardSettingsModal');renderHome();showToast('Сохранено');
+}
+function deleteLibraryExercise(){
+  const ex=library.find(l=>l.id===editingCardId);
+  if(!confirm(`Удалить "${ex.name}"? Статистика в истории останется.`))return;
+  library=library.filter(l=>l.id!==editingCardId);
+  saveLibrary();closeModal('cardSettingsModal');renderHome();showToast('Удалено');
+}
+
+function openAddExercise(){
+  document.getElementById('newExName').value='';
+  document.getElementById('newExCategory').innerHTML=CATEGORIES.map(c=>`<option value="${c.key}">${c.emoji?c.emoji+' ':''}${c.label}</option>`).join('');
+  document.getElementById('addExerciseModal').classList.add('active');
+}
+function saveAddExercise(){
+  const name=document.getElementById('newExName').value.trim();
+  if(!name){showToast('Введите название');return;}
+  if(library.find(l=>l.name===name)){showToast('Уже существует');return;}
+  const type=document.getElementById('newExType').value;
+  library.push({id:nextId(),name,category:document.getElementById('newExCategory').value,type,goalPeriod:'day',goalTarget:type==='time'?300:100,noGoal:false});
+  saveLibrary();closeModal('addExerciseModal');renderHome();showToast('Добавлено');
+}
+
+function openQuickAdd(name,type){
+  quickAddExercise=name;quickAddType=type;quickAddDateMode='today';
+  document.getElementById('qaExerciseName').textContent=`"${name}"`;
+  document.getElementById('qaCustomValue').value='';
+  document.getElementById('qaDatePicker').value=formatDateISO(new Date());
+  document.getElementById('qaDatePicker').style.display='none';
+  document.querySelectorAll('.qa-date-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('qaDateToday').classList.add('active');
+  document.getElementById('quickAddModal').classList.add('active');
+}
+function setQAValue(v){document.getElementById('qaCustomValue').value=v;}
+function setQADate(m){quickAddDateMode=m;document.querySelectorAll('.qa-date-btn').forEach(b=>b.classList.remove('active'));
+  if(m==='today'){document.getElementById('qaDateToday').classList.add('active');document.getElementById('qaDatePicker').style.display='none';}
+  else{document.getElementById('qaDatePick').classList.add('active');document.getElementById('qaDatePicker').style.display='block';}}
+function confirmQuickAdd(){
+  const value=parseInt(document.getElementById('qaCustomValue').value)||0;
+  if(value<=0){showToast('Введите количество');return;}
+  let ds=formatDateKey(new Date());
+  if(quickAddDateMode==='pick'){const v=document.getElementById('qaDatePicker').value;if(!v){showToast('Выберите дату');return;}const p=v.split('-');ds=formatDateKey(new Date(p[0],p[1]-1,p[2]));}
+  addToDay(ds,quickAddExercise,quickAddType,value);
+  closeModal('quickAddModal');
+  showToast(`+${value} ${quickAddExercise} · ${ds}`);
+  renderHome();
+}
+function addToDay(ds,name,type,value){
+  const old=history.filter(h=>dayKey(h)===ds);
+  const totalSeconds=old.reduce((s,h)=>s+(h.totalSeconds||0),0);
+  const dateStr=old.length?old[0].date:`${ds}, 00:00:00`;
+  const note=old.length?old[0].note:undefined;
+  history=history.filter(h=>dayKey(h)!==ds);
+  let exercises=[],timeExercises=[];
+  old.forEach(h=>{
+    (h.exercises||[]).forEach(ex=>{const e=exercises.find(x=>x.name===ex.name);if(e)e.reps+=ex.reps;else exercises.push({name:ex.name,reps:ex.reps,sets:ex.sets||0});});
+    (h.timeExercises||[]).forEach(t=>{const e=timeExercises.find(x=>x.name===t.name);if(e)e.seconds+=t.seconds;else timeExercises.push({name:t.name,seconds:t.seconds});});
+  });
+  if(type==='reps'){const e=exercises.find(x=>x.name===name);if(e)e.reps+=value;else exercises.push({name,reps:value,sets:0});}
+  else{const e=timeExercises.find(x=>x.name===name);if(e)e.seconds+=value;else timeExercises.push({name,seconds:value});}
+  ensureLibrary(name,type);
+  history.push({program:'manual',date:dateStr,time:totalSeconds?`${Math.floor(totalSeconds/60)}м ${totalSeconds%60}с`:'0м 0с',totalSeconds,totalReps:exercises.reduce((s,e)=>s+e.reps,0),exercises,timeExercises,manual:true,note});
+  saveHistory();saveLibrary();
+}
+
+function openProgramPicker(){
+  const list=programs.map(p=>{const{total}=getProgramTotals(p);return `
+    <div class="picker-row" onclick="startProgramById(${p.id})">
+      <div><div class="name">${esc(p.name)}</div><div class="sub">${p.sets.length} сетов · ${total} повт.</div></div>
+      <div class="reps">▶</div>
+    </div>`;}).join('');
+  document.getElementById('programPickerList').innerHTML=list+`
+    <div class="picker-row" onclick="closeModal('programPickerModal');showScreen('programScreen');">
+      <div><div class="name">📋 Программы</div><div class="sub">Редактор программ и конструктор</div></div>
+      <div class="reps">→</div>
     </div>`;
-  });
-  html += `<div class="edit-form-row">
-    <input type="text" class="name-input" id="newTimeName" placeholder="Новое на время">
-    <input type="number" id="newTimeVal" value="30" min="0">
-    <button class="icon-btn ok" onclick="addDayTime('${ds}')">+</button>
-  </div>`;
-
-  el.innerHTML = html;
+  document.getElementById('programPickerModal').classList.add('active');
+}
+function startProgramById(id){
+  closeModal('programPickerModal');
+  currentProgramId=id;
+  workoutSource='program';
+  startWorkoutWith(findProgById(id));
 }
 
-// ===== ПРОГРАММЫ =====
-function renderTabs() {
-  document.getElementById('programTabs').innerHTML =
-    programs.map(p => `<button class="${p.id===currentProgramId?'active':''}" onclick="switchProgram(${p.id})">${esc(p.name)}</button>`).join('') +
-    `<button class="add-tab" onclick="addProgram()" title="Добавить программу">+</button>`;
-}
-function addProgram() {
-  const maxId = programs.reduce((m,p)=>Math.max(m,p.id),0);
-  const newProg = { id: maxId+1, name: `Программа ${programs.length+1}`, sets: [ { items: [] } ] };
-  programs.push(newProg);
-  localStorage.setItem('workoutPrograms', JSON.stringify(programs));
-  currentProgramId = newProg.id;
-  renderTabs(); renderMain();
-  showToast('Программа создана');
-}
-function deleteProgram() {
-  if (programs.length <= 1) { showToast('Нельзя удалить последнюю'); return; }
-  const prog = getProg();
-  if (confirm(`Удалить "${prog.name}"?\n\nСтатистика завершённых тренировок останется.`)) {
-    programs = programs.filter(p => p.id !== currentProgramId);
-    localStorage.setItem('workoutPrograms', JSON.stringify(programs));
-    currentProgramId = programs[0].id;
-    closeEditor();
-    renderTabs(); renderMain();
-    showToast('Программа удалена');
-  }
-}
-
-function renderMain() {
-  const prog = getProg();
-  const { totals, total, timeTotals } = getProgramTotals(prog);
-  document.getElementById('statsGrid').innerHTML = `
-    <div class="stat-card clickable" onclick="showRepsDetails()"><div class="label">Всего повторений</div><div class="value">${total}</div><div class="sub">нажмите</div></div>
-    <div class="stat-card"><div class="label">Сетов</div><div class="value">${prog.sets.length}</div></div>
-    <div class="stat-card"><div class="label">Упражнений</div><div class="value">${Object.keys(totals).length + Object.keys(timeTotals).length}</div></div>
-    <div class="stat-card"><div class="label">Завершено</div><div class="value">${history.filter(h=>h.program===currentProgramId).length}</div></div>`;
-  let listHtml = Object.entries(totals).map(([n,r]) => `<div class="exercise-row"><span class="name">${esc(n)}</span><span class="reps">${r}</span></div>`).join('');
-  listHtml += Object.entries(timeTotals).map(([n,s]) => `<div class="exercise-row"><span class="name">⏱ ${esc(n)}</span><span class="reps blue">${formatDuration(s)}</span></div>`).join('');
-  document.getElementById('exerciseList').innerHTML = listHtml;
-  document.getElementById('totalRow').innerHTML = `<span>Итого</span><span class="value">${total}</span>`;
-}
-function showRepsDetails() {
-  const { totals, total, timeTotals } = getProgramTotals(getProg());
-  let html = Object.entries(totals).map(([n,r]) => `<div class="exercise-detail-row"><div class="name">${esc(n)}</div><div class="reps">${r}</div></div>`).join('');
-  if (Object.keys(timeTotals).length > 0) {
-    html += `<div class="section-sub">Упражнения на время</div>`;
-    html += Object.entries(timeTotals).map(([n,s]) => `<div class="exercise-detail-row"><div class="name">⏱ ${esc(n)}</div><div class="reps blue">${formatDuration(s)}</div></div>`).join('');
-  }
-  document.getElementById('repsDetails').innerHTML = html;
-  document.getElementById('repsTotals').innerHTML = `<div class="total-row"><span>Всего</span><span class="value">${total}</span></div>`;
-  document.getElementById('repsModal').classList.add('active');
-}
-function closeRepsModal() { document.getElementById('repsModal').classList.remove('active'); }
-
-// ===== ТРЕНИРОВКА =====
-function buildSequence(prog) {
-  const seq = [];
-  prog.sets.forEach((set, si) => set.items.forEach(item => seq.push({ setIndex: si, ...item })));
-  return seq;
-}
-function startWorkout() {
-  sequence = buildSequence(getProg());
-  if (sequence.length === 0) { showToast('Тренировка пустая'); return; }
-  workoutState = { index:0, startTime:Date.now(), timerInterval:null, restInterval:null, restTime:60, timeInterval:null, timeLeft:0, timeDone:false };
-  showScreen('workoutScreen');
-  startWorkoutTimer();
-  showCurrentStep();
-  if (navigator.vibrate) navigator.vibrate(30);
-}
-function startWorkoutTimer() {
-  workoutState.timerInterval = setInterval(() => {
-    const e = Math.floor((Date.now()-workoutState.startTime)/1000);
-    const txt = `${String(Math.floor(e/60)).padStart(2,'0')}:${String(e%60).padStart(2,'0')}`;
-    document.getElementById('workoutTimer').textContent = txt;
-    document.getElementById('timeGlobalTimer').textContent = txt;
-  }, 1000);
-}
-function showCurrentStep() {
-  if (workoutState.index >= sequence.length) { finishWorkout(); return; }
-  const step = sequence[workoutState.index];
-  if (step.type === 'rest') { startRest(step.duration); return; }
-  if (step.type === 'time') { startTimeExercise(step); return; }
-  const prog = getProg();
-  document.getElementById('setIndicator').textContent = `Сет ${step.setIndex+1}/${prog.sets.length}`;
-  document.getElementById('progressFill').style.width = `${(workoutState.index/sequence.length)*100}%`;
-  document.getElementById('exName').textContent = step.name;
-  document.getElementById('exReps').textContent = step.reps;
-  showScreen('workoutScreen');
-}
-function advanceWorkout() {
-  workoutState.index++;
-  if (navigator.vibrate) navigator.vibrate(20);
-  showCurrentStep();
-}
-
-function startTimeExercise(step) {
-  const prog = getProg();
-  showScreen('timeScreen');
-  document.getElementById('timeSetIndicator').textContent = `Сет ${step.setIndex+1}/${prog.sets.length}`;
-  document.getElementById('timeProgressFill').style.width = `${(workoutState.index/sequence.length)*100}%`;
-  document.getElementById('timeName').textContent = step.name;
-  workoutState.timeLeft = step.duration;
-  workoutState.timeDone = false;
-  const timerEl = document.getElementById('timeTimer');
-  const hintEl = document.getElementById('timeHint');
-  timerEl.textContent = formatClock(step.duration);
-  timerEl.classList.add('red');
-  hintEl.textContent = 'Выполняйте упражнение...';
-  hintEl.classList.remove('ready');
-  workoutState.timeInterval = setInterval(() => {
-    workoutState.timeLeft--;
-    if (workoutState.timeLeft <= 0) {
-      clearInterval(workoutState.timeInterval);
-      workoutState.timeDone = true;
-      timerEl.textContent = '0:00';
-      timerEl.classList.remove('red');
-      hintEl.textContent = '✅ Время вышло! Нажмите чтобы завершить';
-      hintEl.classList.add('ready');
-      if (navigator.vibrate) navigator.vibrate([100,50,100]);
-    } else {
-      timerEl.textContent = formatClock(workoutState.timeLeft);
-    }
-  }, 1000);
-}
-document.getElementById('timeScreen').addEventListener('click', e => {
-  if (e.target.closest('.back-btn')) return;
-  if (workoutState.timeDone) advanceWorkout();
-});
-
-function startRest(duration) {
-  showScreen('restScreen');
-  workoutState.restTime = duration;
-  updateRestDisplay();
-  workoutState.restInterval = setInterval(() => {
-    workoutState.restTime--;
-    updateRestDisplay();
-    if (workoutState.restTime <= 0) {
-      clearInterval(workoutState.restInterval);
-      if (navigator.vibrate) navigator.vibrate([100,50,100]);
-      advanceWorkout();
-    }
-  }, 1000);
-}
-function updateRestDisplay() { document.getElementById('restTimer').textContent = formatClock(workoutState.restTime); }
-function skipRest() { if (workoutState.restInterval) clearInterval(workoutState.restInterval); advanceWorkout(); }
-
-function finishWorkout() {
-  clearInterval(workoutState.timerInterval);
-  const e = Math.floor((Date.now()-workoutState.startTime)/1000);
-  const m = Math.floor(e/60), s = e%60;
-  const repTotals = {}, timeTotals = {};
-  sequence.forEach(st => {
-    if (st.type==='exercise') repTotals[st.name] = (repTotals[st.name]||0) + st.reps;
-    if (st.type==='time') timeTotals[st.name] = (timeTotals[st.name]||0) + st.duration;
-  });
-  const exercises = Object.entries(repTotals).map(([name,reps])=>({name, reps}));
-  const timeExercises = Object.entries(timeTotals).map(([name,seconds])=>({name, seconds}));
-  const totalReps = exercises.reduce((a,b)=>a+b.reps,0);
-  const totalTimeEx = timeExercises.reduce((a,b)=>a+b.seconds,0);
-  document.getElementById('finishTime').textContent = `${m}м ${s}с`;
-  document.getElementById('finishStats').textContent = `${totalReps} повт. • ${exercises.length} упр. • ${getProg().sets.length} сетов${totalTimeEx > 0 ? ` • ⏱ ${formatDuration(totalTimeEx)}` : ''}`;
-  history.push({ program: currentProgramId, date: new Date().toLocaleString('ru-RU'), time: `${m}м ${s}с`, totalSeconds: e, totalReps, exercises, timeExercises });
-  localStorage.setItem('workoutHistory', JSON.stringify(history));
-  showScreen('finishScreen');
-  if (navigator.vibrate) navigator.vibrate([100,50,100,50,100]);
-  showToast('Тренировка сохранена! 🏆');
-}
-function quitWorkout() {
-  if (confirm('Прервать тренировку?')) {
-    clearInterval(workoutState.timerInterval);
-    clearInterval(workoutState.restInterval);
-    clearInterval(workoutState.timeInterval);
-    showScreen('programScreen');
-  }
-}
-function goHome() { showScreen('dashboardScreen'); }
-document.getElementById('workoutScreen').addEventListener('click', e => { if (!e.target.closest('.back-btn')) advanceWorkout(); });
-document.getElementById('restScreen').addEventListener('click', skipRest);
-
-// ===== РЕДАКТОР =====
-let editorData = null;
-function openEditor() {
-  editorData = JSON.parse(JSON.stringify(getProg()));
-  document.getElementById('progName').value = editorData.name;
-  renderEditor();
-  document.getElementById('editorModal').classList.add('active');
-}
-function renderEditor() {
-  document.getElementById('editorContent').innerHTML = editorData.sets.map((set, si) => `
+function openConstructor(){renderConstructor();document.getElementById('constructorModal').classList.add('active');}
+function renderConstructor(){
+  const repsNames=library.filter(l=>l.type==='reps').map(l=>l.name);
+  const timeNames=library.filter(l=>l.type==='time').map(l=>l.name);
+  document.getElementById('constructorContent').innerHTML=customWorkout.sets.map((set,si)=>`
     <div class="set-block">
-      <div class="set-header">
-        <span class="set-name">Сет ${si+1}</span>
-        <button class="icon-btn del" onclick="removeSet(${si})">✕</button>
-      </div>
-      ${set.items.map((item, ii) => renderItemEditor(si, ii, item)).join('')}
+      <div class="set-header"><span class="set-name">Сет ${si+1}</span><button class="icon-btn del" onclick="removeCSet(${si})">✕</button></div>
+      ${set.items.map((item,ii)=>{
+        if(item.type==='rest')return `<div class="item-row"><span class="rest-icon">😮‍💨</span><input type="number" value="${item.duration}" min="0" onchange="updateCItem(${si},${ii},'duration',this.value)"><span class="unit">сек</span><button class="icon-btn del" onclick="removeCItem(${si},${ii})">✕</button></div>`;
+        if(item.type==='time')return `<div class="item-row"><span class="time-icon">⏱</span><select onchange="updateCItem(${si},${ii},'name',this.value)">${timeNames.map(n=>`<option ${n===item.name?'selected':''}>${esc(n)}</option>`).join('')}</select><input type="number" value="${item.duration}" min="0" onchange="updateCItem(${si},${ii},'duration',this.value)"><span class="unit">сек</span><button class="icon-btn del" onclick="removeCItem(${si},${ii})">✕</button></div>`;
+        return `<div class="item-row"><select onchange="updateCItem(${si},${ii},'name',this.value)">${repsNames.map(n=>`<option ${n===item.name?'selected':''}>${esc(n)}</option>`).join('')}</select><input type="number" value="${item.reps}" min="0" onchange="updateCItem(${si},${ii},'reps',this.value)"><button class="icon-btn del" onclick="removeCItem(${si},${ii})">✕</button></div>`;
+      }).join('')}
       <div class="set-actions">
-        <button onclick="addItem(${si},'exercise')">+ Упражнение</button>
-        <button onclick="addItem(${si},'time')">⏱ На время</button>
-        <button onclick="addItem(${si},'rest')">+ Отдых</button>
+        <button onclick="addCItem(${si},'exercise')">+ Упражнение</button>
+        <button onclick="addCItem(${si},'time')">⏱ На время</button>
+        <button onclick="addCItem(${si},'rest')">+ Отдых</button>
       </div>
+    </div>`).join('')||'<div style="color:var(--muted);text-align:center;padding:30px;font-weight:500;">Добавьте первый сет</div>';
+}
+function addCSet(){customWorkout.sets.push({items:[]});renderConstructor();}
+function removeCSet(si){customWorkout.sets.splice(si,1);renderConstructor();}
+function addCItem(si,type){
+  if(type==='exercise'){const first=library.find(l=>l.type==='reps');customWorkout.sets[si].items.push({type:'exercise',name:first?first.name:'Упражнение',reps:10});}
+  else if(type==='time'){const first=library.find(l=>l.type==='time');customWorkout.sets[si].items.push({type:'time',name:first?first.name:'На время',duration:30});}
+  else customWorkout.sets[si].items.push({type:'rest',duration:60});
+  renderConstructor();
+}
+function removeCItem(si,ii){customWorkout.sets[si].items.splice(ii,1);renderConstructor();}
+function updateCItem(si,ii,f,v){const it=customWorkout.sets[si].items[ii];if(f==='name')it.name=v;else it[f]=parseInt(v)||0;}
+function saveConstructor(){saveCustom();closeModal('constructorModal');showToast('Тренировка сохранена');}
+function saveAndStartConstructor(){saveCustom();closeModal('constructorModal');workoutSource='custom';startWorkoutWith(customWorkout);}
+
+function renderTabs(){
+  document.getElementById('programTabs').innerHTML=programs.map(p=>`<button class="${p.id===currentProgramId?'active':''}" onclick="switchProgram(${p.id})">${esc(p.name)}</button>`).join('')+`<button class="add-tab" onclick="addProgram()">+</button>`;
+}
+function switchProgram(id){currentProgramId=id;renderTabs();renderMain();}
+function addProgram(){const maxId=programs.reduce((m,p)=>Math.max(m,p.id),0);programs.push({id:maxId+1,name:`Программа ${programs.length+1}`,sets:[{items:[]}]});savePrograms();currentProgramId=programs[programs.length-1].id;renderTabs();renderMain();showToast('Создано');}
+function duplicateProgram(){const prog=getProg();const maxId=programs.reduce((m,p)=>Math.max(m,p.id),0);const np=JSON.parse(JSON.stringify(prog));np.id=maxId+1;np.name=prog.name+' (копия)';programs.push(np);savePrograms();currentProgramId=np.id;renderTabs();renderMain();closeModal('programSettingsModal');showToast('Скопировано');}
+function deleteProgram(){if(programs.length<=1){showToast('Нельзя удалить последнюю');return;}const prog=getProg();if(confirm(`Удалить "${prog.name}"?`)){programs=programs.filter(p=>p.id!==currentProgramId);savePrograms();currentProgramId=programs[0].id;closeModal('programSettingsModal');renderTabs();renderMain();showToast('Удалено');}}
+function showProgramSettings(){document.getElementById('programSettingsModal').classList.add('active');}
+
+function getProgramTotals(prog){const totals={},timeTotals={};let total=0,totalTime=0;prog.sets.forEach(s=>s.items.forEach(i=>{if(i.type==='exercise'){totals[i.name]=(totals[i.name]||0)+i.reps;total+=i.reps;}if(i.type==='time'){timeTotals[i.name]=(timeTotals[i.name]||0)+i.duration;totalTime+=i.duration;}}));return{totals,total,timeTotals,totalTime};}
+function renderMain(){
+  const prog=getProg();const{totals,total,timeTotals}=getProgramTotals(prog);
+  document.getElementById('statsGrid').innerHTML=`
+    <div class="stat-card"><div class="label">Всего повторений</div><div class="value">${total}</div></div>
+    <div class="stat-card"><div class="label">Сетов</div><div class="value">${prog.sets.length}</div></div>
+    <div class="stat-card"><div class="label">Упражнений</div><div class="value">${Object.keys(totals).length+Object.keys(timeTotals).length}</div></div>
+    <div class="stat-card"><div class="label">Завершено</div><div class="value">${history.filter(h=>h.program===currentProgramId).length}</div></div>`;
+  let html=Object.entries(totals).map(([n,r])=>`<div class="exercise-row"><span class="name">${esc(n)}</span><span class="reps">${r}</span></div>`).join('');
+  html+=Object.entries(timeTotals).map(([n,s])=>`<div class="exercise-row"><span class="name">⏱ ${esc(n)}</span><span class="reps blue">${formatDuration(s)}</span></div>`).join('');
+  document.getElementById('exerciseList').innerHTML=html;
+  document.getElementById('totalRow').innerHTML=`<span>Итого</span><span class="value">${total}</span>`;
+}
+function startProgramWorkout(){workoutSource='program';startWorkoutWith(getProg());}
+
+let editorData=null;
+function openEditor(){editorData=JSON.parse(JSON.stringify(getProg()));document.getElementById('progName').value=editorData.name;renderEditor();document.getElementById('editorModal').classList.add('active');}
+function renderEditor(){
+  document.getElementById('editorContent').innerHTML=editorData.sets.map((set,si)=>`
+    <div class="set-block">
+      <div class="set-header"><span class="set-name">Сет ${si+1}</span><button class="icon-btn del" onclick="removeSet(${si})">✕</button></div>
+      ${set.items.map((item,ii)=>{
+        if(item.type==='rest')return `<div class="item-row"><span class="rest-icon">😮‍💨</span><input type="number" value="${item.duration}" min="0" onchange="updateItem(${si},${ii},'duration',this.value)"><span class="unit">сек</span><button class="icon-btn del" onclick="removeItem(${si},${ii})">✕</button></div>`;
+        if(item.type==='time')return `<div class="item-row"><span class="time-icon">⏱</span><input type="text" value="${esc(item.name)}" onchange="updateItem(${si},${ii},'name',this.value)"><input type="number" value="${item.duration}" min="0" onchange="updateItem(${si},${ii},'duration',this.value)"><span class="unit">сек</span><button class="icon-btn del" onclick="removeItem(${si},${ii})">✕</button></div>`;
+        return `<div class="item-row"><input type="text" value="${esc(item.name)}" onchange="updateItem(${si},${ii},'name',this.value)"><input type="number" value="${item.reps}" min="0" onchange="updateItem(${si},${ii},'reps',this.value)"><button class="icon-btn del" onclick="removeItem(${si},${ii})">✕</button></div>`;
+      }).join('')}
+      <div class="set-actions"><button onclick="addItem(${si},'exercise')">+ Упражнение</button><button onclick="addItem(${si},'time')">⏱ На время</button><button onclick="addItem(${si},'rest')">+ Отдых</button></div>
     </div>`).join('');
 }
-function renderItemEditor(si, ii, item) {
-  if (item.type === 'rest') {
-    return `<div class="item-row">
-      <span class="rest-icon">😮‍💨</span>
-      <input type="number" value="${item.duration}" min="0" onchange="updateItem(${si},${ii},'duration',this.value)">
-      <span class="unit">сек</span>
-      <button class="icon-btn" onclick="moveItem(${si},${ii},-1)">▲</button>
-      <button class="icon-btn" onclick="moveItem(${si},${ii},1)">▼</button>
-      <button class="icon-btn del" onclick="removeItem(${si},${ii})">✕</button>
-    </div>`;
-  }
-  if (item.type === 'time') {
-    return `<div class="item-row">
-      <span class="time-icon">⏱</span>
-      <input type="text" value="${esc(item.name)}" onchange="updateItem(${si},${ii},'name',this.value)">
-      <input type="number" value="${item.duration}" min="0" onchange="updateItem(${si},${ii},'duration',this.value)">
-      <span class="unit">сек</span>
-      <button class="icon-btn" onclick="moveItem(${si},${ii},-1)">▲</button>
-      <button class="icon-btn" onclick="moveItem(${si},${ii},1)">▼</button>
-      <button class="icon-btn del" onclick="removeItem(${si},${ii})">✕</button>
-    </div>`;
-  }
-  return `<div class="item-row">
-    <input type="text" value="${esc(item.name)}" onchange="updateItem(${si},${ii},'name',this.value)">
-    <input type="number" value="${item.reps}" min="0" onchange="updateItem(${si},${ii},'reps',this.value)">
-    <button class="icon-btn" onclick="moveItem(${si},${ii},-1)">▲</button>
-    <button class="icon-btn" onclick="moveItem(${si},${ii},1)">▼</button>
-    <button class="icon-btn del" onclick="removeItem(${si},${ii})">✕</button>
-  </div>`;
-}
-function addSet() {
-  const last = editorData.sets[editorData.sets.length-1];
-  const items = last ? last.items.map(it => it.type==='exercise' ? {type:'exercise', name:it.name, reps:Math.max(1, it.reps-2)} : {...it}) : [];
-  editorData.sets.push({ items });
-  renderEditor();
-}
-function removeSet(si) {
-  if (confirm('Удалить сет? Повторения из завершённых тренировок останутся.')) {
-    editorData.sets.splice(si, 1);
-    renderEditor();
-  }
-}
-function addItem(si, type) {
-  if (type === 'exercise') editorData.sets[si].items.push({ type:'exercise', name:'Упражнение', reps:10 });
-  else if (type === 'time') editorData.sets[si].items.push({ type:'time', name:'Упражнение на время', duration:30 });
-  else editorData.sets[si].items.push({ type:'rest', duration:60 });
-  renderEditor();
-}
-function removeItem(si, ii) { editorData.sets[si].items.splice(ii, 1); renderEditor(); }
-function moveItem(si, ii, dir) {
-  const arr = editorData.sets[si].items;
-  const ni = ii + dir;
-  if (ni < 0 || ni >= arr.length) return;
-  [arr[ii], arr[ni]] = [arr[ni], arr[ii]];
-  renderEditor();
-}
-function updateItem(si, ii, field, val) {
-  const item = editorData.sets[si].items[ii];
-  if (field === 'name') item.name = val;
-  else item[field] = parseInt(val) || 0;
-}
-function saveEditor() {
-  editorData.name = document.getElementById('progName').value;
-  const idx = programs.findIndex(p => p.id === currentProgramId);
-  programs[idx] = editorData;
-  localStorage.setItem('workoutPrograms', JSON.stringify(programs));
-  closeEditor();
-  renderTabs(); renderMain();
-  showToast('Сохранено');
-}
-function closeEditor() { document.getElementById('editorModal').classList.remove('active'); }
+function addSet(){const last=editorData.sets[editorData.sets.length-1];const items=last?last.items.map(it=>it.type==='exercise'?{type:'exercise',name:it.name,reps:Math.max(1,it.reps-2)}:{...it}):[];editorData.sets.push({items});renderEditor();}
+function removeSet(si){editorData.sets.splice(si,1);renderEditor();}
+function addItem(si,type){if(type==='exercise')editorData.sets[si].items.push({type:'exercise',name:'Упражнение',reps:10});else if(type==='time')editorData.sets[si].items.push({type:'time',name:'На время',duration:30});else editorData.sets[si].items.push({type:'rest',duration:60});renderEditor();}
+function removeItem(si,ii){editorData.sets[si].items.splice(ii,1);renderEditor();}
+function updateItem(si,ii,f,v){const it=editorData.sets[si].items[ii];if(f==='name')it.name=v;else it[f]=parseInt(v)||0;}
+function saveEditor(){editorData.name=document.getElementById('progName').value;const idx=programs.findIndex(p=>p.id===currentProgramId);programs[idx]=editorData;savePrograms();syncLibrary();closeModal('editorModal');renderTabs();renderMain();showToast('Сохранено');}
 
-// ===== ИСТОРИЯ =====
-function showHistory() {
-  const f = history.filter(h => h.program === currentProgramId).reverse();
-  document.getElementById('historyList').innerHTML = f.length === 0 ? '<p style="color:var(--muted);text-align:center;padding:30px;">Нет тренировок</p>' :
-    f.map(h => `<div class="history-item"><div><div class="h-date">${h.date}</div><div style="color:var(--muted);font-size:11px;margin-top:2px;">${h.totalReps} повт.${h.manual?' • вручную':''}</div></div><div class="h-time">${h.time}</div></div>`).join('');
+function buildSequence(prog){const seq=[];prog.sets.forEach((set,si)=>set.items.forEach(item=>seq.push({setIndex:si,...item})));return seq;}
+function startWorkoutWith(prog){
+  sequence=buildSequence(prog);
+  if(sequence.length===0){showToast('Тренировка пустая');return;}
+  workoutState={index:0,startTime:Date.now(),timerInterval:null,restInterval:null,restTime:60,timeInterval:null,timeLeft:0,timeDone:false};
+  showScreen('workoutScreen');
+  startWorkoutTimer();showCurrentStep();playSound(settings.soundType);
+}
+function startWorkoutTimer(){workoutState.timerInterval=setInterval(()=>{const e=Math.floor((Date.now()-workoutState.startTime)/1000);const txt=`${String(Math.floor(e/60)).padStart(2,'0')}:${String(e%60).padStart(2,'0')}`;document.getElementById('workoutTimer').textContent=txt;document.getElementById('timeGlobalTimer').textContent=txt;},1000);}
+function showCurrentStep(){
+  if(workoutState.index>=sequence.length){finishWorkout();return;}
+  const step=sequence[workoutState.index];
+  if(step.type==='rest'){startRest(step.duration);return;}
+  if(step.type==='time'){startTimeExercise(step);return;}
+  const totalSets=Math.max(...sequence.map(s=>s.setIndex))+1;
+  document.getElementById('setIndicator').textContent=`Сет ${step.setIndex+1} из ${totalSets}`;
+  document.getElementById('progressFill').style.width=`${(workoutState.index/sequence.length)*100}%`;
+  document.getElementById('exName').textContent=step.name;
+  document.getElementById('exReps').textContent=step.reps;
+  showScreen('workoutScreen');
+}
+function advanceWorkout(){workoutState.index++;playSound(settings.soundType);showCurrentStep();}
+function startTimeExercise(step){
+  const totalSets=Math.max(...sequence.map(s=>s.setIndex))+1;
+  showScreen('timeScreen');
+  document.getElementById('timeSetIndicator').textContent=`Сет ${step.setIndex+1} из ${totalSets}`;
+  document.getElementById('timeProgressFill').style.width=`${(workoutState.index/sequence.length)*100}%`;
+  document.getElementById('timeName').textContent=step.name;
+  workoutState.timeLeft=step.duration;workoutState.timeDone=false;
+  const t=document.getElementById('timeTimer'),hEl=document.getElementById('timeHint');
+  t.textContent=formatClock(step.duration);hEl.textContent='Выполняйте упражнение...';hEl.classList.remove('ready');
+  workoutState.timeInterval=setInterval(()=>{workoutState.timeLeft--;
+    if(workoutState.timeLeft<=0){clearInterval(workoutState.timeInterval);workoutState.timeDone=true;t.textContent='0:00';hEl.textContent='✅ Время вышло! Нажмите, чтобы завершить';hEl.classList.add('ready');playAlert();}
+    else t.textContent=formatClock(workoutState.timeLeft);},1000);
+}
+document.getElementById('timeScreen').addEventListener('click',e=>{if(e.target.closest('.back-btn'))return;if(workoutState.timeDone)advanceWorkout();});
+function startRest(d){showScreen('restScreen');workoutState.restTime=d;updateRestDisplay();workoutState.restInterval=setInterval(()=>{workoutState.restTime--;updateRestDisplay();if(workoutState.restTime<=0){clearInterval(workoutState.restInterval);playAlert();advanceWorkout();}},1000);}
+function updateRestDisplay(){document.getElementById('restTimer').textContent=formatClock(workoutState.restTime);}
+function skipRest(){if(workoutState.restInterval)clearInterval(workoutState.restInterval);advanceWorkout();}
+document.getElementById('restScreen').addEventListener('click',skipRest);
+document.getElementById('workoutScreen').addEventListener('click',e=>{if(!e.target.closest('.back-btn'))advanceWorkout();});
+
+function finishWorkout(){
+  clearInterval(workoutState.timerInterval);
+  const e=Math.floor((Date.now()-workoutState.startTime)/1000);
+  const m=Math.floor(e/60),s=e%60;
+  const repTotals={},timeTotals={},setCounts={};
+  sequence.forEach(st=>{
+    if(st.type==='exercise'){repTotals[st.name]=(repTotals[st.name]||0)+st.reps;setCounts[st.name]=(setCounts[st.name]||new Set());setCounts[st.name].add(st.setIndex);}
+    if(st.type==='time'){timeTotals[st.name]=(timeTotals[st.name]||0)+st.duration;}
+  });
+  const exercises=Object.entries(repTotals).map(([name,reps])=>({name,reps,sets:setCounts[name]?setCounts[name].size:0}));
+  const timeExercises=Object.entries(timeTotals).map(([name,seconds])=>({name,seconds}));
+  exercises.forEach(ex=>ensureLibrary(ex.name,'reps'));
+  timeExercises.forEach(t=>ensureLibrary(t.name,'time'));
+  const totalReps=exercises.reduce((a,b)=>a+b.reps,0);
+  const totalTimeEx=timeExercises.reduce((a,b)=>a+b.seconds,0);
+  document.getElementById('finishTime').textContent=`${m} мин ${s} с`;
+  document.getElementById('finishStats').textContent=`${totalReps} повт. · ${exercises.length} упр.${totalTimeEx>0?` · ⏱ ${formatDuration(totalTimeEx)}`:''}`;
+  document.getElementById('finishNote').value='';
+  history.push({program:workoutSource==='program'?currentProgramId:'custom',date:new Date().toLocaleString('ru-RU'),time:`${m}м ${s}с`,totalSeconds:e,totalReps,exercises,timeExercises});
+  saveHistory();saveLibrary();
+  showScreen('finishScreen');playAlert();
+}
+function saveFinishNote(){const n=document.getElementById('finishNote').value.trim();if(n){history[history.length-1].note=n;saveHistory();}showToast('Сохранено! 🏆');showScreen('homeScreen');}
+function quitWorkout(){if(confirm('Прервать тренировку?')){clearInterval(workoutState.timerInterval);clearInterval(workoutState.restInterval);clearInterval(workoutState.timeInterval);showScreen('homeScreen');}}
+
+function showHistory(){
+  const f=history.filter(h=>h.program===currentProgramId).reverse();
+  document.getElementById('historyList').innerHTML=f.length===0?'<p style="color:var(--muted);text-align:center;padding:40px;font-weight:500;">Нет тренировок</p>':
+    f.map((h,idx)=>{const realIdx=history.length-1-idx;return `<div class="history-item"><div class="h-info"><div class="h-date">${h.date}${h.manual?' · вручную':''}</div><div class="h-time">${h.time} · ${h.totalReps} повт.</div>${h.note?`<div class="h-note">"${esc(h.note)}"</div>`:''}</div><button class="h-edit" onclick="editNote(${realIdx})">✏️</button></div>`;}).join('');
   document.getElementById('historyModal').classList.add('active');
 }
-function closeHistory() { document.getElementById('historyModal').classList.remove('active'); }
+function editNote(i){editingNoteIndex=i;document.getElementById('noteTextarea').value=history[i].note||'';document.getElementById('noteModal').classList.add('active');}
+function saveNote(){history[editingNoteIndex].note=document.getElementById('noteTextarea').value.trim()||undefined;saveHistory();closeModal('noteModal');showHistory();showToast('Сохранено');}
 
-document.querySelectorAll('.modal-overlay').forEach(o => o.addEventListener('click', e => { if (e.target === o) o.classList.remove('active'); }));
+function showMainSettings(){
+  document.getElementById('soundToggle').classList.toggle('active',settings.soundEnabled);
+  document.getElementById('soundType').value=settings.soundType;
+  document.getElementById('soundVolume').value=settings.soundVolume;
+  document.getElementById('wsGoalPeriod').value=settings.wsGoalPeriod||'week';
+  document.getElementById('wsGoalTarget').value=settings.wsGoalTarget||3;
+  document.getElementById('mainSettingsModal').classList.add('active');
+}
+function saveMainSettings(){
+  settings.wsGoalPeriod=document.getElementById('wsGoalPeriod').value;
+  settings.wsGoalTarget=parseInt(document.getElementById('wsGoalTarget').value)||1;
+  saveSettings();closeModal('mainSettingsModal');renderHome();showToast('Сохранено');
+}
 
-// Блокировка контекстного меню на мобильных
-document.addEventListener('contextmenu', e => {
-  if (e.target.tagName !== 'INPUT' && e.target.tagName !== 'TEXTAREA') e.preventDefault();
-});
+function exportData(){
+  const data={programs,history,settings,library,customWorkout,exportDate:new Date().toISOString()};
+  const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(data,null,2)],{type:'application/json'}));a.download=`workout-backup-${formatDateKey(new Date())}.json`;a.click();
+  showToast('Экспортировано');
+}
+function importData(ev){
+  const file=ev.target.files[0];if(!file)return;
+  const r=new FileReader();
+  r.onload=e=>{try{const d=JSON.parse(e.target.result);
+    if(d.programs){programs=migratePrograms(d.programs);savePrograms();}
+    if(d.history){history=d.history;saveHistory();}
+    if(d.settings){settings={...settings,...d.settings};saveSettings();}
+    if(d.library){library=d.library;saveLibrary();}
+    if(d.customWorkout){customWorkout=d.customWorkout;saveCustom();}
+    currentProgramId=programs[0].id;syncLibrary();closeModal('mainSettingsModal');renderHome();showToast('Импортировано');
+  }catch(err){showToast('Ошибка файла');}};
+  r.readAsText(file);ev.target.value='';
+}
 
-renderDashboard();
+document.querySelectorAll('.modal-overlay').forEach(o=>o.addEventListener('click',e=>{if(e.target===o)o.classList.remove('active');}));
+document.addEventListener('contextmenu',e=>{if(e.target.tagName!=='INPUT'&&e.target.tagName!=='TEXTAREA')e.preventDefault();});
+
+renderHome();
 </script>
 </body>
 </html>
